@@ -1,12 +1,37 @@
-﻿<Window x:Class="CrossTxUpdateClient.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CrossTxUpdateClient"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="CrossTxUpdateClient.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="CrossTx Update Client" Height="428.956" Width="774.831">
+    <Grid Margin="0,0,2,-1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="402*"/>
+            <ColumnDefinition Width="58*"/>
+            <ColumnDefinition Width="305*"/>
+        </Grid.ColumnDefinitions>
+        <Image x:Name="logo" HorizontalAlignment="Left" Height="68" Margin="10,10,0,0" VerticalAlignment="Top" Width="316"
+               Source="/Resources/crosstx.png"/>
+        <Label x:Name="updateClientLabel" Content="UPDATE CLIENT" HorizontalAlignment="Left" Margin="233,38,0,0" VerticalAlignment="Top" Height="40" Width="211" FontFamily="Berlin Sans FB" FontSize="18" RenderTransformOrigin="0.264,0.261" Grid.ColumnSpan="2"/>
+        <CheckBox x:Name="checkBoxEnableAutoUpdates" Content="Enable Automatic Updates" HorizontalAlignment="Left" Margin="83,141,0,0" VerticalAlignment="Top" Height="30" Width="238" FontSize="14" RenderTransformOrigin="0.126,0.467"/>
+        <CheckBox x:Name="checkBoxEnableAutoDeactivations" Content="Enable Automatic Deactivations" HorizontalAlignment="Left" Margin="321,141,0,0" VerticalAlignment="Top" FontSize="14" Grid.ColumnSpan="3" Height="18" Width="215"/>
+        <Label x:Name="labelAutomaticUpdates" Content="Automatic Updates" HorizontalAlignment="Left" Margin="39,104,0,0" VerticalAlignment="Top" FontSize="16" Height="31" Width="146"/>
+        <Separator HorizontalAlignment="Left" Height="46" Margin="39,113,-406,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="3"/>
+        <Label x:Name="labelUpdateTimes" Content="Automatic Update Intervals" HorizontalAlignment="Left" Margin="39,176,0,0" VerticalAlignment="Top" FontSize="16" Height="31" Width="202"/>
+        <Separator HorizontalAlignment="Left" Height="46" Margin="39,186,-406,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="3"/>
+        <xctk:IntegerUpDown Name="updateIntegerUpDown" HorizontalAlignment="Left" Margin="240,217,0,0" VerticalAlignment="Top" Height="28" Width="90" Minimum="0" Maximum="31"/>
+        <xctk:IntegerUpDown Name="deactivationUpDown" HorizontalAlignment="Left" Margin="116.69,218,0,0" VerticalAlignment="Top" Height="28" Width="90" Minimum="0" Maximum="31" Grid.Column="2"/>
+        <Label x:Name="labelUpdateDays" Content="Time Between Updates" HorizontalAlignment="Left" Margin="83,217,0,0" VerticalAlignment="Top" FontSize="14" Height="29" Width="152"/>
+        <Label x:Name="labelDeactivationDays" Content="Time Between Deactivations" HorizontalAlignment="Left" Margin="390,216,0,0" VerticalAlignment="Top" FontSize="14" Grid.ColumnSpan="3" Height="29" Width="183"/>
+        <Label x:Name="labelDay" Content="days" HorizontalAlignment="Left" Margin="330,217,0,0" VerticalAlignment="Top" FontSize="14" Height="29" Width="38"/>
+        <Label x:Name="labelDay2" Content="days" HorizontalAlignment="Left" Margin="206.69,218,0,0" VerticalAlignment="Top" FontSize="14" Grid.Column="2" Height="29" Width="38"/>
+        <Label x:Name="labelManualUpdates" Content="Manual Updates" HorizontalAlignment="Left" Margin="39,267,0,0" VerticalAlignment="Top" FontSize="16" Height="31" Width="126"/>
+        <Separator HorizontalAlignment="Left" Height="46" Margin="39,278,-406,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="3"/>
+        <Button x:Name="buttonManualUpdate" Content="Download Update File" HorizontalAlignment="Left" Margin="109,324,0,0" VerticalAlignment="Top" Width="168" Height="35"/>
+        <Button x:Name="buttonManualDeactivation" Content="Download Deactivation File" HorizontalAlignment="Left" Margin="310,324,0,0" VerticalAlignment="Top" Width="168" Height="35" Grid.ColumnSpan="3"/>
+        <Button x:Name="buttonManualCSV" Content="Download CSV" HorizontalAlignment="Left" Margin="58.69,324,0,0" VerticalAlignment="Top" Width="168" Height="35" Grid.Column="2"/>
     </Grid>
 </Window>
