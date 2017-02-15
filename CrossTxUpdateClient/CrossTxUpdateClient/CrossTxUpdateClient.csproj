@@ -84,6 +84,7 @@
     <Compile Include="Services\ServiceManager.cs" />
     <Compile Include="UIControllers\IUserInterfaceController.cs" />
     <Compile Include="UIControllers\UserInterfaceController.cs" />
+    <Compile Include="UpdateAPI\DownloadManager.cs" />
     <Compile Include="UpdateAPI\Updater.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
