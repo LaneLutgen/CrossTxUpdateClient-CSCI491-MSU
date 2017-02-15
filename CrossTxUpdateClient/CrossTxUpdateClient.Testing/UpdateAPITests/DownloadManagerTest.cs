@@ -14,7 +14,7 @@ namespace CrossTxUpdateClient.Testing.UpdateAPITests
         public void DownloadCSVFile_FileDownloadSuccessful()
         {
             DownloadManager dlManager = new DownloadManager("C:\\Users\\Lane\\Desktop\\csv.zip");
-            dlManager.DownloadUpdateFile();
+            dlManager.DownloadFullCSV();
         }
 
         /// <summary>

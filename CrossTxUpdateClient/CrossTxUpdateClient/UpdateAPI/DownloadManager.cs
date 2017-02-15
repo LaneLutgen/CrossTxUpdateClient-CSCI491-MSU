@@ -61,6 +61,7 @@ namespace CrossTxUpdateClient.UpdateAPI
             //This function can be used for a progress bar
             int progress = e.ProgressPercentage;
             Console.WriteLine(progress);
+            System.Diagnostics.Debug.WriteLine(progress);
         }
 
         public void DownloadUpdateFile()
