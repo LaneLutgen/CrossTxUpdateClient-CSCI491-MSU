@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.IO.Compression;
 
 namespace CrossTxUpdateClient.UpdateAPI
 {
@@ -104,6 +106,29 @@ namespace CrossTxUpdateClient.UpdateAPI
         {
             int progress = e.ProgressPercentage;
             Console.WriteLine(progress);
+        }
+        
+        public void ExtractZIPToDirectory(string path, string destination)
+        {
+            using (ZipArchive archive = ZipFile.OpenRead(path))
+            {
+                foreach (ZipArchiveEntry entry in archive.Entries)
+                {
+                    entry.ExtractToFile(Path.Combine(destination, entry.FullName));
+                }
+            }
+        }
+
+        public void ExtractZIPToStream(Stream stream)
+        {
+            using (ZipArchive archive = new ZipArchive(stream))
+            {
+                foreach (ZipArchiveEntry entry in archive.Entries)
+                {
+                    Stream outputStream = entry.Open();
+                    //Here we can return a list of the file streams or something
+                }
+            }
         }
     }
 }
