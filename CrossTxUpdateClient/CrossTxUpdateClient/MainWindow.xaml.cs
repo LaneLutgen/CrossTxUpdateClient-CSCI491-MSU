@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using CrossTxUpdateClient.UIControllers;
+
 namespace CrossTxUpdateClient
 {
     /// <summary>
@@ -20,8 +22,11 @@ namespace CrossTxUpdateClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        private IUserInterfaceController uiController;
+
         public MainWindow()
         {
+            uiController = new UserInterfaceController();
             InitializeComponent();
         }
     }

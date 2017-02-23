@@ -27,6 +27,8 @@ namespace CrossTxUpdateClient.UpdateAPI
 
         private string filePath;
 
+        //http://download.cms.gov/nppes/NPI_Files.html Original file location
+
         //Note: these are hard coded right now but we will have to write the logic to change them to most recent
         private const string csvURL = "http://download.cms.gov/nppes/NPPES_Data_Dissemination_January_2017.zip";
         private const string updateURL = "http://download.cms.gov/nppes/NPPES_Data_Dissemination_020617_021217_Weekly.zip";
