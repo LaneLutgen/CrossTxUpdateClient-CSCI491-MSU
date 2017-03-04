@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.IO.Compression;
+using HtmlAgilityPack;
 
 namespace CrossTxUpdateClient.UpdateAPI
 {
@@ -27,22 +28,73 @@ namespace CrossTxUpdateClient.UpdateAPI
 
         private string filePath;
 
-        //http://download.cms.gov/nppes/NPI_Files.html Original file location
+        private const string url = "http://download.cms.gov/nppes";
+        private const string baseURL = "http://download.cms.gov/nppes/NPI_Files.html";
 
         //Note: these are hard coded right now but we will have to write the logic to change them to most recent
-        private const string csvURL = "http://download.cms.gov/nppes/NPPES_Data_Dissemination_January_2017.zip";
-        private const string updateURL = "http://download.cms.gov/nppes/NPPES_Data_Dissemination_020617_021217_Weekly.zip";
-        private const string deactivationURL = "http://download.cms.gov/nppes/NPPES_Deactivated_NPI_Report_011017.zip";   
+        //private string csvURL = "http://download.cms.gov/nppes/NPPES_Data_Dissemination_January_2017.zip";
+        //private string updateURL = "http://download.cms.gov/nppes/NPPES_Data_Dissemination_020617_021217_Weekly.zip";
+        //private string deactivationURL = "http://download.cms.gov/nppes/NPPES_Deactivated_NPI_Report_011017.zip";
 
-        public DownloadManager()
-        {
-            filePath = null;
-        }
+        private string csvURL;
+        private string updateURL;
+        private string deactivationURL;
 
         public DownloadManager(string path)
         {
             filePath = path;
+            ParseHTMLForLatestLinks();
         }
+
+        private void ParseHTMLForLatestLinks()
+        {
+            HtmlWeb hw = new HtmlWeb();
+            HtmlDocument doc = hw.Load(baseURL);
+
+            List<HtmlNode> links = new List<HtmlNode>();
+
+            foreach(HtmlNode link in doc.DocumentNode.SelectNodes("//a[@href]"))
+            {
+                links.Add(link);
+            }
+
+            csvURL = url + FindLatestCSVDownloadURL(links);
+            updateURL = url + FindLatestUpdateDownloadURL(links);
+            deactivationURL = url + FindLatestDeactivationDownloadURL(links);
+        }
+
+        private string FindLatestCSVDownloadURL(List<HtmlNode> links)
+        {
+            DateTime curTime = DateTime.Now;
+
+            foreach(HtmlNode node in links)
+            {
+                string hrefVal = node.GetAttributeValue("href", string.Empty);
+
+                string curMonth = DateTime.Now.ToString("MMMM");
+                DateTime lastMonth = curTime.AddMonths(-1);
+                string prevMonth = lastMonth.ToString("MMMM");
+
+                string curYear = DateTime.Now.ToString("yyyy");
+
+                if (hrefVal.Contains("./NPPES_Data_Dissemination_" + curMonth + "_" + curYear) || hrefVal.Contains("NPPES_Data_Dissemination_" + prevMonth + "_" + curYear))
+                {
+                    return hrefVal.Substring(1);
+                }
+            }
+            return null;
+        }
+
+        private string FindLatestUpdateDownloadURL(List<HtmlNode> links)
+        {
+            return null;
+        }
+
+        private string FindLatestDeactivationDownloadURL(List<HtmlNode> links)
+        {
+            return null;
+        }
+
 
         public void DownloadFullCSV()
         {

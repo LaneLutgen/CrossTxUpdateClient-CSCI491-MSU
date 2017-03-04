@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using CrossTxUpdateClient.Configurations;
+using CrossTxUpdateClient.UpdateAPI;
 
 namespace CrossTxUpdateClient.UIControllers
 {
@@ -13,9 +14,11 @@ namespace CrossTxUpdateClient.UIControllers
     /// </summary>
     public class UserInterfaceController : IUserInterfaceController
     {
+        private Updater updater;
+
         public UserInterfaceController()
         {
-
+            updater = new Updater();
         }
 
         public void SetEnableAutoDeactivationsConfig(bool value)
@@ -56,6 +59,21 @@ namespace CrossTxUpdateClient.UIControllers
         public int GetTimeBetweenUpdates()
         {
             return ConfigurationManager.TimeBetweenUpdates;
+        }
+
+        public void DownloadFullCSV()
+        {
+            updater.DownloadFullCSV();
+        }
+
+        public void DownloadUpdateFile()
+        {
+            updater.DownloadLatestUpdateFile();
+        }
+
+        public void DownloadDeactivationFile()
+        {
+            updater.DownloadLatestDeactivationFile();
         }
     }
 }

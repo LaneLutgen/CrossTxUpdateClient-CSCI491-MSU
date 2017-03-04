@@ -11,5 +11,28 @@ namespace CrossTxUpdateClient.UpdateAPI
     /// </summary>
     public class Updater
     {
+        private string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\CrossTxDownloadTest";
+
+        private DownloadManager downloadMngr;
+
+        public Updater()
+        {
+            downloadMngr = new DownloadManager(path);
+        }
+
+        public void DownloadFullCSV()
+        {
+
+        }
+
+        public void DownloadLatestUpdateFile()
+        {
+
+        }
+
+        public void DownloadLatestDeactivationFile()
+        {
+
+        }
     }
 }

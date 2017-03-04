@@ -27,5 +27,11 @@ namespace CrossTxUpdateClient.UIControllers
         void SetTimeBetweenDeactivations(int value);
 
         int GetTimeBetweenDeactivations();
+
+        void DownloadFullCSV();
+
+        void DownloadUpdateFile();
+
+        void DownloadDeactivationFile();
     }
 }
