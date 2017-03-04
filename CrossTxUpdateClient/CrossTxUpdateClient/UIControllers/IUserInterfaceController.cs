@@ -14,10 +14,18 @@ namespace CrossTxUpdateClient.UIControllers
         //Define all the methods that will need to interface with the UI
         void SetEnableAutoUpdatesConfig(bool value);
 
+        bool GetEnableAutoUpdatesConfig();
+
         void SetEnableAutoDeactivationsConfig(bool value);
+
+        bool GetEnableAutoDeactivationsConfig();
 
         void SetTimeBetweenUpdates(int value);
 
+        int GetTimeBetweenUpdates();
+
         void SetTimeBetweenDeactivations(int value);
+
+        int GetTimeBetweenDeactivations();
     }
 }

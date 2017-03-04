@@ -9,9 +9,9 @@ namespace CrossTxUpdateClient.Configurations
     /// <summary>
     /// This class will work with the project properties to save and load configurations stored in the app data
     /// </summary>
-    public class ConfigurationManager
+    public static class ConfigurationManager
     {
-        public bool EnableAutoUpdates
+        public static bool EnableAutoUpdates
         {
             get
             {
@@ -20,10 +20,11 @@ namespace CrossTxUpdateClient.Configurations
             set
             {
                 Properties.Settings.Default.EnableAutoUpdates = value;
+                SaveSettings();
             }
         }
 
-        public bool EnableAutoDeactivations
+        public static bool EnableAutoDeactivations
         {
             get
             {
@@ -32,10 +33,11 @@ namespace CrossTxUpdateClient.Configurations
             set
             {
                 Properties.Settings.Default.EnableAutoDeactivations = value;
+                SaveSettings();
             }
         }
 
-        public int TimeBetweenUpdates
+        public static int TimeBetweenUpdates
         {
             get
             {
@@ -44,10 +46,11 @@ namespace CrossTxUpdateClient.Configurations
             set
             {
                 Properties.Settings.Default.TimeBetweenUpdates = value;
+                SaveSettings();
             }
         }
 
-        public int TimeBetweenDeactivations
+        public static int TimeBetweenDeactivations
         {
             get
             {
@@ -56,7 +59,13 @@ namespace CrossTxUpdateClient.Configurations
             set
             {
                 Properties.Settings.Default.TimeBetweenDeactivations = value;
+                SaveSettings();
             }
+        }
+
+        private static void SaveSettings()
+        {
+            Properties.Settings.Default.Save();
         }
     }
 }

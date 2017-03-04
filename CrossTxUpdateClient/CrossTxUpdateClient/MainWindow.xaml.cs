@@ -28,6 +28,46 @@ namespace CrossTxUpdateClient
         {
             uiController = new UserInterfaceController();
             InitializeComponent();
+            InitConfigurations();
+        }
+
+        private void InitConfigurations()
+        {
+            this.checkBoxEnableAutoUpdates.IsChecked = uiController.GetEnableAutoUpdatesConfig();
+            this.checkBoxEnableAutoDeactivations.IsChecked = uiController.GetEnableAutoDeactivationsConfig();
+            this.updateIntegerUpDown.Value = uiController.GetTimeBetweenUpdates();
+            this.deactivationUpDown.Value = uiController.GetTimeBetweenDeactivations();
+        }
+
+        private void checkBoxEnableAutoUpdates_Checked(object sender, RoutedEventArgs e)
+        {
+            uiController.SetEnableAutoUpdatesConfig((bool)this.checkBoxEnableAutoUpdates.IsChecked);
+        }
+
+        private void checkBoxEnableAutoUpdates_Unchecked(object sender, RoutedEventArgs e)
+        {
+            uiController.SetEnableAutoUpdatesConfig((bool)this.checkBoxEnableAutoUpdates.IsChecked);
+        }
+
+
+        private void checkBoxEnableAutoDeactivations_Checked(object sender, RoutedEventArgs e)
+        {
+            uiController.SetEnableAutoDeactivationsConfig((bool)this.checkBoxEnableAutoDeactivations.IsChecked);
+        }
+
+        private void checkBoxEnableAutoDeactivations_Unchecked(object sender, RoutedEventArgs e)
+        {
+            uiController.SetEnableAutoDeactivationsConfig((bool)this.checkBoxEnableAutoDeactivations.IsChecked);
+        }
+
+        private void updateIntegerUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            uiController.SetTimeBetweenUpdates((int)this.updateIntegerUpDown.Value);
+        }
+
+        private void deactivationUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            uiController.SetTimeBetweenDeactivations((int)this.deactivationUpDown.Value);
         }
     }
 }

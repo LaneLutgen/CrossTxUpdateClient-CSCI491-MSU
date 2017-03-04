@@ -13,31 +13,49 @@ namespace CrossTxUpdateClient.UIControllers
     /// </summary>
     public class UserInterfaceController : IUserInterfaceController
     {
-        private ConfigurationManager configManager;
-
         public UserInterfaceController()
         {
-            configManager = new ConfigurationManager();
+
         }
 
         public void SetEnableAutoDeactivationsConfig(bool value)
         {
-            configManager.EnableAutoDeactivations = value;
+            ConfigurationManager.EnableAutoDeactivations = value;
+        }
+
+        public bool GetEnableAutoDeactivationsConfig()
+        {
+            return ConfigurationManager.EnableAutoDeactivations;
         }
 
         public void SetEnableAutoUpdatesConfig(bool value)
         {
-            configManager.EnableAutoUpdates = value;
+            ConfigurationManager.EnableAutoUpdates = value;
+        }
+
+        public bool GetEnableAutoUpdatesConfig()
+        {
+            return ConfigurationManager.EnableAutoUpdates;
         }
 
         public void SetTimeBetweenDeactivations(int value)
         {
-            configManager.TimeBetweenDeactivations = value;
+            ConfigurationManager.TimeBetweenDeactivations = value;
+        }
+
+        public int GetTimeBetweenDeactivations()
+        {
+            return ConfigurationManager.TimeBetweenDeactivations;
         }
 
         public void SetTimeBetweenUpdates(int value)
         {
-            configManager.TimeBetweenUpdates = value;
+            ConfigurationManager.TimeBetweenUpdates = value;
+        }
+
+        public int GetTimeBetweenUpdates()
+        {
+            return ConfigurationManager.TimeBetweenUpdates;
         }
     }
 }
