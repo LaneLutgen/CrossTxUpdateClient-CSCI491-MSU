@@ -4,11 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Microsoft.SqlServer.Management.Smo;
-using Microsoft.SqlServer.Management.Common;
+using Microsoft.SqlServer;
 using System.IO;
 using System.Data.SqlClient;
-
+using System.Data;
 
 namespace CrossTxUpdateClient.DB
 {
@@ -35,15 +34,16 @@ namespace CrossTxUpdateClient.DB
         {
 
             ///Make sure your file path points to the schema file, wherever it is.
-            string schema_script = File.readAllText(@"C:\CrossTxUpdateClient-CSCI491-MSU\CrossTxUpdateClient\CrossTxUpdateClient\DB");
+            string schema_script = File.ReadAllText(@"C:\CrossTxUpdateClient-CSCI491-MSU\CrossTxUpdateClient\CrossTxUpdateClient\DB");
 
-            SqlConnection conn = new SqlConnection(connectionString);
-
-            Server server = new Server(new ServerConnection(conn));
+            var query = schema_script;
+            var conn = new SqlConnection(connectionString);
+            var command = new SqlCommand(query, conn);
 
             try
             {
-                server.ConnectionContext.ExecuteNonQuery(script);
+                conn.Open();
+                command.ExecuteNonQuery();
 
                 Console.Write("DB Successfully Initiated.");
 
@@ -53,8 +53,16 @@ namespace CrossTxUpdateClient.DB
             {
                 Console.Write("Exception occurred:" + ex);
 
-                break;
+                return conn;
             }
+            finally
+            {
+                if ((conn.State == ConnectionState.Open))
+                {
+                    conn.Close();
+                }
+            }
+
         }
     }
 }
