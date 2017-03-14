@@ -237,6 +237,12 @@ namespace CrossTxUpdateClient.UpdateAPI
             //This function can be used for a progress bar
             ProgessValue = e.ProgressPercentage;
         }
+
+        public void ExtractZip()
+        {
+            ExtractZIPToDirectory(zipPath, filePath);
+            DeleteOldZip();
+        }
         
         public void ExtractZIPToDirectory(string path, string destination)
         {
@@ -250,7 +256,6 @@ namespace CrossTxUpdateClient.UpdateAPI
                     {
                         entry.ExtractToFile(curPath);
                     }
-                    
                 }
             }
         }
@@ -271,8 +276,6 @@ namespace CrossTxUpdateClient.UpdateAPI
         {
             DownloadInProgress = false;
             ProgessValue = 0;
-            ExtractZIPToDirectory(zipPath, filePath);
-            DeleteOldZip();
         }
 
         private void DeleteOldZip()

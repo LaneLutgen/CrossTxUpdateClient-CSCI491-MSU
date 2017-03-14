@@ -23,7 +23,7 @@ namespace CrossTxUpdateClient.UIControllers
         public UserInterfaceController(MainWindow window)
         {
             mainWindow = window;
-            updater = new Updater();
+            updater = new Updater(this);
         }
 
         public void SetEnableAutoDeactivationsConfig(bool value)
@@ -114,8 +114,14 @@ namespace CrossTxUpdateClient.UIControllers
 
         private void worker_Complete(object sender, RunWorkerCompletedEventArgs e)
         {
-            mainWindow.progressBarLabel.Content = "Download Complete!";
+            mainWindow.progressBarLabel.Content = "Extracting File Contents. Please Wait...";
             mainWindow.progressBar.Value = 0;
+            updater.UnzipFileAsync();
+        }
+
+        public void SetProgressLabelValue(string value)
+        {
+            mainWindow.progressBarLabel.Content = value;
         }
     }
 }
