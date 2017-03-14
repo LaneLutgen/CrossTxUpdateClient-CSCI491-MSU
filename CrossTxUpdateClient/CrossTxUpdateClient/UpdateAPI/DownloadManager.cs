@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.IO.Compression;
 using HtmlAgilityPack;
+using System.Text.RegularExpressions;
 
 namespace CrossTxUpdateClient.UpdateAPI
 {
@@ -30,11 +31,6 @@ namespace CrossTxUpdateClient.UpdateAPI
 
         private const string url = "http://download.cms.gov/nppes";
         private const string baseURL = "http://download.cms.gov/nppes/NPI_Files.html";
-
-        //Note: these are hard coded right now but we will have to write the logic to change them to most recent
-        //private string csvURL = "http://download.cms.gov/nppes/NPPES_Data_Dissemination_January_2017.zip";
-        //private string updateURL = "http://download.cms.gov/nppes/NPPES_Data_Dissemination_020617_021217_Weekly.zip";
-        //private string deactivationURL = "http://download.cms.gov/nppes/NPPES_Deactivated_NPI_Report_011017.zip";
 
         private string csvURL;
         private string updateURL;
@@ -87,11 +83,72 @@ namespace CrossTxUpdateClient.UpdateAPI
 
         private string FindLatestUpdateDownloadURL(List<HtmlNode> links)
         {
-            return null;
+            int daySeperation = int.MaxValue;
+
+            string retval = null;
+
+            DateTime curTime = DateTime.Now;
+
+            //Regex pattern for a update file download link
+            string basePattern = "(./NPPES_Data_Dissemination_)\\d{6}(?!\\d)";
+            string datePattern = "(?<!\\d)\\d{6}(?!\\d)";
+
+            foreach (HtmlNode node in links)
+            {
+                string hrefVal = node.GetAttributeValue("href", string.Empty);
+
+                Match match = Regex.Match(hrefVal, basePattern, RegexOptions.IgnoreCase);
+
+                //Check if the regex was matched for an update link
+                if (match.Success)
+                {
+                    match = Regex.Match(hrefVal, datePattern, RegexOptions.IgnoreCase);
+                    if (match.Success)
+                    {
+                        string date = match.Value;
+
+                        int linkMonth = Int32.Parse(date.Substring(0, 2));
+                        int linkDay = Int32.Parse(date.Substring(2, 2));
+                        int linkYear = Int32.Parse(date.Substring(4, 2));
+
+                        DateTime linkDate = new DateTime(linkYear, linkMonth, linkDay);
+
+                        //Compare the days between links
+                        TimeSpan diff = curTime.Subtract(linkDate);
+
+                        //If this link is more recent, set it to the return value and update the max days seperated variable
+                        if(diff.Days < daySeperation)
+                        {
+                            daySeperation = diff.Days;
+                            retval = hrefVal.Substring(1);
+                        }
+                    }
+                }
+            }
+            return retval;
         }
 
         private string FindLatestDeactivationDownloadURL(List<HtmlNode> links)
         {
+            DateTime curTime = DateTime.Now;
+
+            //Regex pattern for deactivation file (there should only be one so we don't need to check the date)
+            string basePattern = "(./NPPES_Deactivated_NPI_Report_)\\d{6}(?!\\d)";
+
+            foreach (HtmlNode node in links)
+            {
+                string hrefVal = node.GetAttributeValue("href", string.Empty);
+
+                Match match = Regex.Match(hrefVal, basePattern, RegexOptions.IgnoreCase);
+
+                //Check if the regex was matched
+                if (match.Success)
+                {
+                    //If this date is closer
+                    return hrefVal.Substring(1);
+                }
+            }
+
             return null;
         }
 
