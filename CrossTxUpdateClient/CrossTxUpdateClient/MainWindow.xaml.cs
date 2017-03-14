@@ -26,7 +26,7 @@ namespace CrossTxUpdateClient
 
         public MainWindow()
         {
-            uiController = new UserInterfaceController();
+            uiController = new UserInterfaceController(this);
             InitializeComponent();
             InitConfigurations();
         }

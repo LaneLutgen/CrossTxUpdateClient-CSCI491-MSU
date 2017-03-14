@@ -21,31 +21,25 @@ namespace CrossTxUpdateClient.UpdateAPI
         {
             path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\CrossTxDownloadTest";
             zipPath = path + "\\csv.zip";
-            downloadMngr = new DownloadManager(zipPath);
+            downloadMngr = new DownloadManager(path, zipPath);
         }
 
         public void DownloadFullCSV()
         {
             CreateDirectory();
             downloadMngr.DownloadFullCSV();
-            downloadMngr.ExtractZIPToDirectory(zipPath, path);
-            DeleteOldZip();
         }
 
         public void DownloadLatestUpdateFile()
         {
             CreateDirectory();
             downloadMngr.DownloadUpdateFile();
-            downloadMngr.ExtractZIPToDirectory(zipPath, path);
-            DeleteOldZip();
         }
 
         public void DownloadLatestDeactivationFile()
         {
             CreateDirectory();
             downloadMngr.DownloadDeactivationFile();
-            downloadMngr.ExtractZIPToDirectory(zipPath, path);
-            DeleteOldZip();
         }
 
         private void CreateDirectory()
@@ -56,12 +50,14 @@ namespace CrossTxUpdateClient.UpdateAPI
             }
         }
 
-        private void DeleteOldZip()
+        public int GetProgressValue()
         {
-            if (File.Exists(zipPath))
-            {
-                File.Delete(zipPath);
-            }
+            return downloadMngr.ProgessValue;
+        }
+
+        public bool IsDownloading()
+        {
+            return downloadMngr.DownloadInProgress;
         }
     }
 }

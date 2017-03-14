@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 using CrossTxUpdateClient.Configurations;
 using CrossTxUpdateClient.UpdateAPI;
+using System.ComponentModel;
+using System.Windows;
+using System.Threading;
 
 namespace CrossTxUpdateClient.UIControllers
 {
@@ -14,10 +17,12 @@ namespace CrossTxUpdateClient.UIControllers
     /// </summary>
     public class UserInterfaceController : IUserInterfaceController
     {
+        private MainWindow mainWindow;
         private Updater updater;
 
-        public UserInterfaceController()
+        public UserInterfaceController(MainWindow window)
         {
+            mainWindow = window;
             updater = new Updater();
         }
 
@@ -61,19 +66,56 @@ namespace CrossTxUpdateClient.UIControllers
             return ConfigurationManager.TimeBetweenUpdates;
         }
 
+        public void InitBackgroundWorker()
+        {
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.WorkerReportsProgress = true;
+            worker.DoWork += worker_DoWork;
+            worker.ProgressChanged += worker_ProgressChanged;
+            worker.RunWorkerCompleted += worker_Complete;
+
+            worker.RunWorkerAsync();
+        }
+
         public void DownloadFullCSV()
         {
+            mainWindow.progressBarLabel.Content = "Downloading Full Data Set...";
             updater.DownloadFullCSV();
+            InitBackgroundWorker();
         }
 
         public void DownloadUpdateFile()
         {
+            mainWindow.progressBarLabel.Content = "Downloading Latest Update File...";
             updater.DownloadLatestUpdateFile();
+            InitBackgroundWorker();
         }
 
         public void DownloadDeactivationFile()
         {
+            mainWindow.progressBarLabel.Content = "Downloading Latest Deactivation File...";
             updater.DownloadLatestDeactivationFile();
+            InitBackgroundWorker();
+        }
+
+        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while(updater.IsDownloading())
+            {
+                (sender as BackgroundWorker).ReportProgress(updater.GetProgressValue());
+                Thread.Sleep(100);
+            }
+        }
+
+        private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            mainWindow.progressBar.Value = e.ProgressPercentage;
+        }
+
+        private void worker_Complete(object sender, RunWorkerCompletedEventArgs e)
+        {
+            mainWindow.progressBarLabel.Content = "Download Complete!";
+            mainWindow.progressBar.Value = 0;
         }
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CrossTxUpdateClient"
         xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="CrossTxUpdateClient.MainWindow"
         mc:Ignorable="d"
-        Title="CrossTx Update Client" Height="428.956" Width="774.831">
+        Title="CrossTx Update Client" Height="467.956" Width="774.831">
     <Grid Margin="0,0,2,-1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="402*"/>
@@ -33,5 +33,7 @@
         <Button x:Name="buttonManualUpdate" Content="Download Update File" HorizontalAlignment="Left" Margin="109,324,0,0" VerticalAlignment="Top" Width="168" Height="35" Click="buttonManualUpdate_Click"/>
         <Button x:Name="buttonManualDeactivation" Content="Download Deactivation File" HorizontalAlignment="Left" Margin="310,324,0,0" VerticalAlignment="Top" Width="168" Height="35" Grid.ColumnSpan="3" Click="buttonManualDeactivation_Click"/>
         <Button x:Name="buttonManualCSV" Content="Download CSV" HorizontalAlignment="Left" Margin="58.69,324,0,0" VerticalAlignment="Top" Width="168" Height="35" Grid.Column="2" Click="buttonManualCSV_Click"/>
+        <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="19" Margin="109,393,0,0" VerticalAlignment="Top" Width="578" Grid.ColumnSpan="3"/>
+        <Label x:Name="progressBarLabel" Content="" HorizontalAlignment="Left" Margin="109,367,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

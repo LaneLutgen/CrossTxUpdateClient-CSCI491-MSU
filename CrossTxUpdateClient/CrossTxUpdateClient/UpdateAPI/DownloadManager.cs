@@ -14,7 +14,10 @@ namespace CrossTxUpdateClient.UpdateAPI
 {
     public class DownloadManager
     {
-        
+        public int ProgessValue { get; private set; }
+
+        public bool DownloadInProgress { get; private set; }
+
         public string FilePath
         {
             get
@@ -36,9 +39,13 @@ namespace CrossTxUpdateClient.UpdateAPI
         private string updateURL;
         private string deactivationURL;
 
-        public DownloadManager(string path)
+        private string zipPath;
+
+        public DownloadManager(string filePath, string zipPath)
         {
-            filePath = path;
+            this.filePath = filePath;
+            this.zipPath = zipPath;
+            
             ParseHTMLForLatestLinks();
         }
 
@@ -155,68 +162,80 @@ namespace CrossTxUpdateClient.UpdateAPI
 
         public void DownloadFullCSV()
         {
-            WebClient webClient = new WebClient();
-            webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(CSVDownload_Complete);
-            webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(CSVDownload_ProgressChanged);
+            if (!DownloadInProgress)
+            {
+                DownloadInProgress = true;
 
-            //This can throw a WebException but we don't want to catch it here
-            webClient.DownloadFile(new Uri(csvURL), filePath);
+                WebClient webClient = new WebClient();
+                webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(CSVDownload_Complete);
+                webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(CSVDownload_ProgressChanged);
+
+                //This can throw a WebException but we don't want to catch it here
+                webClient.DownloadFileAsync(new Uri(csvURL), zipPath);
+            }
         }
 
         private void CSVDownload_Complete(object sender, AsyncCompletedEventArgs e)
         {
-            //Handler for download completion
-            Console.WriteLine("CSV File Download Complete");
+            HandleDownloadCompletion();
         }
 
         private void CSVDownload_ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             //This function can be used for a progress bar
-            int progress = e.ProgressPercentage;
-            Console.WriteLine(progress);
-            System.Diagnostics.Debug.WriteLine(progress);
+            ProgessValue = e.ProgressPercentage;
         }
 
         public void DownloadUpdateFile()
         {
-            WebClient webClient = new WebClient();
-            webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(UpdateFileDownload_Complete);
-            webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(UpdateFileDownload_ProgressChanged);
+            if (!DownloadInProgress)
+            {
+                DownloadInProgress = true;
 
-            //This can throw a WebException but we don't want to catch it here
-            webClient.DownloadFile(new Uri(updateURL), filePath);
+                WebClient webClient = new WebClient();
+                webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(UpdateFileDownload_Complete);
+                webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(UpdateFileDownload_ProgressChanged);
+
+                //This can throw a WebException but we don't want to catch it here
+                webClient.DownloadFileAsync(new Uri(updateURL), zipPath); 
+            }
         }
 
         private void UpdateFileDownload_Complete(object sender, AsyncCompletedEventArgs e)
         {
-            Console.WriteLine("Update File Download Complete");
+            HandleDownloadCompletion();
         }
 
         private void UpdateFileDownload_ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            int progress = e.ProgressPercentage;
-            Console.WriteLine(progress);
+            //This function can be used for a progress bar
+            ProgessValue = e.ProgressPercentage;
         }
 
         public void DownloadDeactivationFile()
         {
-            WebClient webClient = new WebClient();
-            webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(DeactivationDownload_Complete);
-            webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DeactivationDownload_ProgressChanged);
+            if (!DownloadInProgress)
+            {
+                DownloadInProgress = true;
 
-            //This can throw a WebException but we don't want to catch it here
-            webClient.DownloadFile(new Uri(deactivationURL), filePath);
+                WebClient webClient = new WebClient();
+                webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(DeactivationDownload_Complete);
+                webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DeactivationDownload_ProgressChanged);
+
+                //This can throw a WebException but we don't want to catch it here
+                webClient.DownloadFileAsync(new Uri(deactivationURL), zipPath);
+            }
         }
 
         private void DeactivationDownload_Complete(object sender, AsyncCompletedEventArgs e)
         {
-            Console.WriteLine("Deactivation File Download Complete");
+            HandleDownloadCompletion();
         }
 
         private void DeactivationDownload_ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            int progress = e.ProgressPercentage;
-            Console.WriteLine(progress);
+            //This function can be used for a progress bar
+            ProgessValue = e.ProgressPercentage;
         }
         
         public void ExtractZIPToDirectory(string path, string destination)
@@ -245,6 +264,22 @@ namespace CrossTxUpdateClient.UpdateAPI
                     Stream outputStream = entry.Open();
                     //Here we can return a list of the file streams or something
                 }
+            }
+        }
+
+        private void HandleDownloadCompletion()
+        {
+            DownloadInProgress = false;
+            ProgessValue = 0;
+            ExtractZIPToDirectory(zipPath, filePath);
+            DeleteOldZip();
+        }
+
+        private void DeleteOldZip()
+        {
+            if (File.Exists(zipPath))
+            {
+                File.Delete(zipPath);
             }
         }
     }
