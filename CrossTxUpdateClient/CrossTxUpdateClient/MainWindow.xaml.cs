@@ -69,5 +69,20 @@ namespace CrossTxUpdateClient
         {
             uiController.SetTimeBetweenDeactivations((int)this.deactivationUpDown.Value);
         }
+
+        private void buttonManualCSV_Click(object sender, RoutedEventArgs e)
+        {
+            uiController.DownloadFullCSV();
+        }
+
+        private void buttonManualUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            uiController.DownloadUpdateFile();
+        }
+
+        private void buttonManualDeactivation_Click(object sender, RoutedEventArgs e)
+        {
+            uiController.DownloadDeactivationFile();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,28 +12,56 @@ namespace CrossTxUpdateClient.UpdateAPI
     /// </summary>
     public class Updater
     {
-        private string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\CrossTxDownloadTest";
+        private string path;
+        private string zipPath;
 
         private DownloadManager downloadMngr;
 
         public Updater()
         {
-            downloadMngr = new DownloadManager(path);
+            path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\CrossTxDownloadTest";
+            zipPath = path + "\\csv.zip";
+            downloadMngr = new DownloadManager(zipPath);
         }
 
         public void DownloadFullCSV()
         {
-
+            CreateDirectory();
+            downloadMngr.DownloadFullCSV();
+            downloadMngr.ExtractZIPToDirectory(zipPath, path);
+            DeleteOldZip();
         }
 
         public void DownloadLatestUpdateFile()
         {
-
+            CreateDirectory();
+            downloadMngr.DownloadUpdateFile();
+            downloadMngr.ExtractZIPToDirectory(zipPath, path);
+            DeleteOldZip();
         }
 
         public void DownloadLatestDeactivationFile()
         {
+            CreateDirectory();
+            downloadMngr.DownloadDeactivationFile();
+            downloadMngr.ExtractZIPToDirectory(zipPath, path);
+            DeleteOldZip();
+        }
 
+        private void CreateDirectory()
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+
+        private void DeleteOldZip()
+        {
+            if (File.Exists(zipPath))
+            {
+                File.Delete(zipPath);
+            }
         }
     }
 }

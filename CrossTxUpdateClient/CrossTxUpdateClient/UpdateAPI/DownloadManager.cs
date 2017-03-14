@@ -225,7 +225,13 @@ namespace CrossTxUpdateClient.UpdateAPI
             {
                 foreach (ZipArchiveEntry entry in archive.Entries)
                 {
-                    entry.ExtractToFile(Path.Combine(destination, entry.FullName));
+                    string curPath = Path.Combine(destination, entry.FullName);
+
+                    if (!File.Exists(curPath))
+                    {
+                        entry.ExtractToFile(curPath);
+                    }
+                    
                 }
             }
         }
