@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CrossTxUpdateClient.DB;
 
 namespace CrossTxUpdateClient.UpdateAPI
 {
     interface CSVParser<T>
     {
         void Parse();
+        void Update();
     }
 
     public class Activate : CSVParser<Activate>
@@ -24,6 +26,11 @@ namespace CrossTxUpdateClient.UpdateAPI
             throw new NotImplementedException();
         }
 
+        void CSVParser<Activate>.Update()
+        {
+            
+        }
+
     }
 
     class Deactivate : CSVParser<Deactivate>
@@ -37,6 +44,12 @@ namespace CrossTxUpdateClient.UpdateAPI
         void CSVParser<Deactivate>.Parse()
         {
             throw new NotImplementedException();
+        }
+
+        void CSVParser<Deactivate>.Update()
+        {
+            DBManager DB = new DBManager();
+            //DB.deleteEntry() //
         }
 
     }
