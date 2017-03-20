@@ -64,5 +64,61 @@ namespace CrossTxUpdateClient.DB
             }
 
         }
+
+        private bool openConn(SqlConnection conn)
+        {
+            try
+            {
+                conn.Open();
+                return true;
+            }
+            catch(System.Exception ex)
+            {
+                Console.Write("Database could not be opened.");
+            }
+            return false;
+        }
+
+        private bool closeConn(SqlConnection conn)
+        {
+            try
+            {
+                conn.Close();
+                return true;
+            }
+            catch(System.Exception ex)
+            {
+                Console.Write(ex.Message);
+                return false;
+            }
+        }
+
+        public void deleteEntry(String NPI)
+        {
+            SqlConnection conn = new SqlConnection(connectionString);
+            string query = "DELETE FROM npi_organization_data WHERE NPI='" + NPI + "'";
+           
+
+            if(openConn(conn) == true)
+            {
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.ExecuteNonQuery();
+                closeConn(conn);
+            }
+        }
+
+        public void replaceEntry()
+        {
+            SqlConnection conn = new SqlConnection(connectionString);
+            string query = "REPLACE INTO npi_organization_data (NPI, Name, OtherName,)";
+
+
+            if (openConn(conn) == true)
+            {
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.ExecuteNonQuery();
+                closeConn(conn);
+            }
+        }
     }
 }
