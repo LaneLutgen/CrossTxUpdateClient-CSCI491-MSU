@@ -11,6 +11,7 @@ namespace CrossTxUpdateClient.Configurations
     /// </summary>
     public static class ConfigurationManager
     {
+        //covered
         public static bool EnableAutoUpdates
         {
             get
@@ -23,7 +24,7 @@ namespace CrossTxUpdateClient.Configurations
                 SaveSettings();
             }
         }
-
+        //covered
         public static bool EnableAutoDeactivations
         {
             get
@@ -36,7 +37,7 @@ namespace CrossTxUpdateClient.Configurations
                 SaveSettings();
             }
         }
-
+        //covered
         public static int TimeBetweenUpdates
         {
             get
@@ -49,7 +50,7 @@ namespace CrossTxUpdateClient.Configurations
                 SaveSettings();
             }
         }
-
+        //covered
         public static int TimeBetweenDeactivations
         {
             get
@@ -62,7 +63,7 @@ namespace CrossTxUpdateClient.Configurations
                 SaveSettings();
             }
         }
-
+        //covered, unsure about test
         private static void SaveSettings()
         {
             Properties.Settings.Default.Save();
