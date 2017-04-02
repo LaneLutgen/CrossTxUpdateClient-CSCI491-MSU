@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Forms;
+using System.ComponentModel;
 
 using CrossTxUpdateClient.UIControllers;
+using CrossTxUpdateClient.Services;
+
 
 namespace CrossTxUpdateClient
 {
@@ -29,6 +34,53 @@ namespace CrossTxUpdateClient
             uiController = new UserInterfaceController(this);
             InitializeComponent();
             InitConfigurations();
+
+            InitSysTrayIcon();
+        }
+
+        private void InitSysTrayIcon()
+        {
+            NotifyIcon ni = new NotifyIcon();
+            ni.Icon = Properties.Resources.AppIcon;
+            ni.Visible = true;
+
+            ni.DoubleClick += delegate (object sender, EventArgs args)
+            {
+                this.Show();
+                this.WindowState = WindowState.Normal;
+            };
+
+            System.Windows.Forms.ContextMenu menu = new System.Windows.Forms.ContextMenu();
+            System.Windows.Forms.MenuItem showAppItem = new System.Windows.Forms.MenuItem();
+            System.Windows.Forms.MenuItem exitAppItem = new System.Windows.Forms.MenuItem();
+
+            showAppItem.Index = 0;
+            showAppItem.Text = "Show App";
+            showAppItem.Click += delegate (object sender, EventArgs e)
+            {
+                this.Show();
+                this.WindowState = WindowState.Normal;
+            };
+
+            exitAppItem.Index = 1;
+            exitAppItem.Text = "Exit";
+            exitAppItem.Click += delegate (object sender, EventArgs e)
+            {
+                Environment.Exit(1);
+            };
+
+            menu.MenuItems.Add(showAppItem);
+            menu.MenuItems.Add(exitAppItem);
+
+            ni.ContextMenu = menu;
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            e.Cancel = true;
+
+            this.Hide();
+            base.OnClosing(e);
         }
 
         private void InitConfigurations()
@@ -83,6 +135,11 @@ namespace CrossTxUpdateClient
         private void buttonManualDeactivation_Click(object sender, RoutedEventArgs e)
         {
             uiController.DownloadDeactivationFile();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            ServiceManager.Start();
         }
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:CrossTxUpdateClient"
         xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="CrossTxUpdateClient.MainWindow"
         mc:Ignorable="d"
-        Title="CrossTx Update Client" Height="467.956" Width="774.831">
+        Title="CrossTx Update Client" Height="467.956" Width="774.831" Loaded="Window_Loaded">
     <Grid Margin="0,0,2,-1">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="402*"/>
