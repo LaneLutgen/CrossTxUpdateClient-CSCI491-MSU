@@ -25,22 +25,22 @@ namespace CrossTxUpdateClient.UIControllers
             mainWindow = window;
             updater = new Updater(this);
         }
-
+        //covered
         public void SetEnableAutoDeactivationsConfig(bool value)
         {
             ConfigurationManager.EnableAutoDeactivations = value;
         }
-
+        //covered
         public bool GetEnableAutoDeactivationsConfig()
         {
             return ConfigurationManager.EnableAutoDeactivations;
         }
-
+        //covered
         public void SetEnableAutoUpdatesConfig(bool value)
         {
             ConfigurationManager.EnableAutoUpdates = value;
         }
-
+        //covered
         public bool GetEnableAutoUpdatesConfig()
         {
             return ConfigurationManager.EnableAutoUpdates;

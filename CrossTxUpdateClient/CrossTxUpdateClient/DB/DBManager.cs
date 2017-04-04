@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using Microsoft.SqlServer;
 using System.IO;
-using System.Data.SqlClient;
 using System.Data;
+using MySql.Data.MySqlClient;
 
 namespace CrossTxUpdateClient.DB
 {
@@ -16,53 +10,129 @@ namespace CrossTxUpdateClient.DB
     /// </summary>
     public class DBManager
     {
+        private MySqlConnection connection;
+        private string server;
+        private string database;
+        private string uid;
+        private string password;
 
-        /// Example connection string:
-        /// "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ccwebgrity;Data Source=SURAJIT\SQLEXPRESS;database=master"
-        string connectionString;
 
-        public DBManager() 
-        { 
+        public DBManager()
+        {
+            Initialize();
         }
 
-        public DBManager(SqlConnection conn, string connectionString) 
+
+        private void Initialize()
         {
-            this.connectionString = connectionString;
+            server = "localhost";
+            database = "crosstx";
+            uid = "root";
+            password = "";
+            string connectionString;
+            connectionString = "server=" + server + ";" + "database=" +
+            database + ";" + "uid=" + uid + ";" + "password=" + password + ";";
+
+            connection = new MySqlConnection(connectionString);
         }
 
-        protected SqlConnection initalizeDB(object sender, EventArgs e) 
+
+        private bool OpenConnection()
         {
-
-            ///Make sure your file path points to the schema file, wherever it is.
-            string schema_script = File.ReadAllText(@"C:\CrossTxUpdateClient-CSCI491-MSU\CrossTxUpdateClient\CrossTxUpdateClient\DB");
-
-            var query = schema_script;
-            var conn = new SqlConnection(connectionString);
-            var command = new SqlCommand(query, conn);
-
             try
             {
-                conn.Open();
-                command.ExecuteNonQuery();
-
-                Console.Write("DB Successfully Initiated.");
-
-                return conn;
+                connection.Open();
+                return true;
             }
-            catch (System.Exception ex)
+            catch (MySqlException ex)
             {
-                Console.Write("Exception occurred:" + ex);
-
-                return conn;
-            }
-            finally
-            {
-                if ((conn.State == ConnectionState.Open))
+                switch (ex.Number)
                 {
-                    conn.Close();
-                }
-            }
+                    case 0:
+                        Console.Write("Unable to connect to server.");
+                        break;
 
+                    case 1045:
+                        Console.Write("Invalid username/password.");
+                        break;
+                }
+                return false;
+            }
         }
+
+
+        private bool CloseConnection()
+        {
+            try
+            {
+                connection.Close();
+                return true;
+            }
+            catch (MySqlException ex)
+            {
+                Console.Write(ex.Message);
+                return false;
+            }
+        }
+
+
+        public void BulkInsert(String FilePath, String Table, String Delimeter)
+        {
+            if (this.OpenConnection() == true)
+            {
+
+                string query = "LOAD DATA LOCAL INFILE" + FilePath + "INTO TABLE" + Table + "FIELDS TERMINATED BY" + Delimeter;
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+        }
+
+
+        public void Insert(String query)
+        {
+
+            if (this.OpenConnection() == true)
+            {       
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+        }
+
+
+        public void Update(String query)
+        {
+
+            if (this.OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandText = query;
+                cmd.Connection = connection;
+
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+        }
+
+
+        public void Delete(String query)
+        {
+
+            if (this.OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+        }
+
     }
+
 }
