@@ -68,6 +68,10 @@ namespace CrossTxUpdateClient.Configurations
 
         public static bool IsBootupSequence
         {
+            get
+            {
+                return Properties.Settings.Default.Bootup;
+            }
             set
             {
                 RegistryKey rk = Registry.CurrentUser.OpenSubKey
@@ -83,6 +87,8 @@ namespace CrossTxUpdateClient.Configurations
                 {
                     rk.DeleteValue("StartupWithWindows", false);
                 }
+                Properties.Settings.Default.Bootup = value;
+                SaveSettings();
             }
         }
 

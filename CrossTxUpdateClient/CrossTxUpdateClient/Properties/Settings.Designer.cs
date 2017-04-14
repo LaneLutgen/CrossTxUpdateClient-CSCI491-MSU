@@ -70,5 +70,17 @@ namespace CrossTxUpdateClient.Properties {
                 this["TimeBetweenDeactivations"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Bootup {
+            get {
+                return ((bool)(this["Bootup"]));
+            }
+            set {
+                this["Bootup"] = value;
+            }
+        }
     }
 }

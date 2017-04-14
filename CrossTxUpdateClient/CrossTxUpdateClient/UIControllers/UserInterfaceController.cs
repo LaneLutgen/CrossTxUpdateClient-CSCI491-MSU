@@ -124,6 +124,11 @@ namespace CrossTxUpdateClient.UIControllers
             mainWindow.progressBarLabel.Content = value;
         }
 
+        public bool GetBoot()
+        {
+            return ConfigurationManager.IsBootupSequence;
+        }
+
         public void SetAsBoot(bool value)
         {
             ConfigurationManager.IsBootupSequence = value;

@@ -89,6 +89,7 @@ namespace CrossTxUpdateClient
             this.checkBoxEnableAutoDeactivations.IsChecked = uiController.GetEnableAutoDeactivationsConfig();
             this.updateIntegerUpDown.Value = uiController.GetTimeBetweenUpdates();
             this.deactivationUpDown.Value = uiController.GetTimeBetweenDeactivations();
+            this.checkBoxStartOnBoot.IsChecked = uiController.GetBoot();
         }
 
         private void checkBoxEnableAutoUpdates_Checked(object sender, RoutedEventArgs e)
