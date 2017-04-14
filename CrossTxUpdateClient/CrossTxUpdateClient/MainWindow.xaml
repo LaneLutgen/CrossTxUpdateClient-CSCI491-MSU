@@ -44,7 +44,7 @@
             </Button.RenderTransform>
         </Button>
         <Button x:Name="buttonManualCSV" Content="Apply CSV" HorizontalAlignment="Left" Margin="57,393,0,0" VerticalAlignment="Top" Width="168" Height="35" Grid.Column="2" Click="buttonManualCSV_Click"/>
-        <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="19" Margin="107,452,0,0" VerticalAlignment="Top" Width="578" Grid.ColumnSpan="3"/>
+        <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="19" Margin="110,462,0,0" VerticalAlignment="Top" Width="578" Grid.ColumnSpan="3"/>
         <Label x:Name="progressBarLabel" Content="" HorizontalAlignment="Left" Margin="107,436,0,0" VerticalAlignment="Top"/>
         <Separator HorizontalAlignment="Left" Height="46" Margin="39,263,-400,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="3"/>
         <Separator HorizontalAlignment="Left" Height="46" Margin="39,186,-400,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="3"/>

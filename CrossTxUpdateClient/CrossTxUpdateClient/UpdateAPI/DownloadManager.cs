@@ -30,6 +30,10 @@ namespace CrossTxUpdateClient.UpdateAPI
             }
         }
 
+        public bool CSVLinkFound { get; set; }
+        public bool UpdateLinkFound { get; set; }
+        public bool DeactivationLinkFound { get; set; }
+
         private string filePath;
 
         private const string url = "http://download.cms.gov/nppes";
@@ -61,9 +65,17 @@ namespace CrossTxUpdateClient.UpdateAPI
                 links.Add(link);
             }
 
-            csvURL = url + FindLatestCSVDownloadURL(links);
-            updateURL = url + FindLatestUpdateDownloadURL(links);
-            deactivationURL = url + FindLatestDeactivationDownloadURL(links);
+            string csvLink = FindLatestCSVDownloadURL(links);
+            string updateLink = FindLatestUpdateDownloadURL(links);
+            string deactivationLink = FindLatestDeactivationDownloadURL(links);
+
+            CSVLinkFound = csvLink == null ? false : true;
+            UpdateLinkFound= updateLink == null ? false : true;
+            DeactivationLinkFound = deactivationLink == null ? false : true;
+
+            csvURL = url + csvLink;
+            updateURL = url + updateLink;
+            deactivationURL = url + deactivationLink;
         }
 
         private string FindLatestCSVDownloadURL(List<HtmlNode> links)

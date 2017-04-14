@@ -29,22 +29,46 @@ namespace CrossTxUpdateClient.UpdateAPI
             downloadMngr = new DownloadManager(path, zipPath);
         }
 
-        public void DownloadFullCSV()
+        public bool DownloadFullCSV()
         {
-            CreateDirectory();
-            downloadMngr.DownloadFullCSV();
+            bool successfull = false;
+
+            if(downloadMngr.CSVLinkFound)
+            {
+                CreateDirectory();
+                downloadMngr.DownloadFullCSV();
+                successfull = true;
+            }
+
+            return successfull;
         }
 
-        public void DownloadLatestUpdateFile()
+        public bool DownloadLatestUpdateFile()
         {
-            CreateDirectory();
-            downloadMngr.DownloadUpdateFile();
+            bool successfull = false;
+
+            if(downloadMngr.UpdateLinkFound)
+            {
+                CreateDirectory();
+                downloadMngr.DownloadUpdateFile();
+                successfull = true;
+            }
+
+            return successfull;
         }
 
-        public void DownloadLatestDeactivationFile()
+        public bool DownloadLatestDeactivationFile()
         {
-            CreateDirectory();
-            downloadMngr.DownloadDeactivationFile();
+            bool successfull = false;
+
+            if(downloadMngr.DeactivationLinkFound)
+            {
+                CreateDirectory();
+                downloadMngr.DownloadDeactivationFile();
+                successfull = true;
+            }
+
+            return successfull;
         }
 
         public void UnzipFileAsync()

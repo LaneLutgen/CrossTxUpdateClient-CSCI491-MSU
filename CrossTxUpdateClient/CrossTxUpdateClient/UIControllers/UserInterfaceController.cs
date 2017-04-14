@@ -80,22 +80,43 @@ namespace CrossTxUpdateClient.UIControllers
         public void DownloadFullCSV()
         {
             mainWindow.progressBarLabel.Content = "Downloading Full Data Set...";
-            updater.DownloadFullCSV();
-            InitBackgroundWorker();
+            if(updater.DownloadFullCSV())
+            {
+                InitBackgroundWorker();
+            }
+            else
+            {
+                ClearProgressLabel();
+                MessageBox.Show("Full Data set was not found.");
+            }
         }
 
         public void DownloadUpdateFile()
         {
             mainWindow.progressBarLabel.Content = "Downloading Latest Update File...";
-            updater.DownloadLatestUpdateFile();
-            InitBackgroundWorker();
+            if (updater.DownloadLatestUpdateFile())
+            {
+                InitBackgroundWorker();
+            }
+            else
+            {
+                ClearProgressLabel();
+                MessageBox.Show("No Update Files found.");
+            }
         }
 
         public void DownloadDeactivationFile()
         {
             mainWindow.progressBarLabel.Content = "Downloading Latest Deactivation File...";
-            updater.DownloadLatestDeactivationFile();
-            InitBackgroundWorker();
+            if(updater.DownloadLatestDeactivationFile())
+            {
+                InitBackgroundWorker();
+            }
+            else
+            {
+                ClearProgressLabel();
+                MessageBox.Show("No Deactivation Files found.");
+            }
         }
 
         private void worker_DoWork(object sender, DoWorkEventArgs e)
@@ -132,6 +153,11 @@ namespace CrossTxUpdateClient.UIControllers
         public void SetAsBoot(bool value)
         {
             ConfigurationManager.IsBootupSequence = value;
+        }
+
+        private void ClearProgressLabel()
+        {
+            mainWindow.progressBarLabel.Content = "";
         }
     }
 }
