@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -64,6 +65,27 @@ namespace CrossTxUpdateClient.Configurations
             }
         }
         //covered, unsure about test
+
+        public static bool IsBootupSequence
+        {
+            set
+            {
+                RegistryKey rk = Registry.CurrentUser.OpenSubKey
+                    ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+
+                //Yes, start on boot
+                if(value)
+                {
+                    rk.SetValue("StartupWithWindows", System.Reflection.Assembly.GetExecutingAssembly().Location);
+                }
+                //No, don't start on boot
+                else
+                {
+                    rk.DeleteValue("StartupWithWindows", false);
+                }
+            }
+        }
+
         private static void SaveSettings()
         {
             Properties.Settings.Default.Save();

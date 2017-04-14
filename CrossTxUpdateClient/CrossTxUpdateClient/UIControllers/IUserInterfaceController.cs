@@ -33,5 +33,7 @@ namespace CrossTxUpdateClient.UIControllers
         void DownloadUpdateFile();
 
         void DownloadDeactivationFile();
+
+        void SetAsBoot(bool value);
     }
 }

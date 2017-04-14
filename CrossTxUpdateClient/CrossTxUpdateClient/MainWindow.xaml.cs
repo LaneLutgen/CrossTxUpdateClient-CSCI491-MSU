@@ -141,5 +141,15 @@ namespace CrossTxUpdateClient
         {
             ServiceManager.Start();
         }
+
+        private void checkBoxStartOnBoot_Checked(object sender, RoutedEventArgs e)
+        {
+            uiController.SetAsBoot((bool)this.checkBoxStartOnBoot.IsChecked);
+        }
+
+        private void checkBoxStartOnBoot_Unchecked(object sender, RoutedEventArgs e)
+        {
+            uiController.SetAsBoot((bool)this.checkBoxStartOnBoot.IsChecked);
+        }
     }
 }
