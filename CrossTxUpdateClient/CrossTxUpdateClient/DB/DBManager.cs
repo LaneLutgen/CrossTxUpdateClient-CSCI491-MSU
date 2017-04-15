@@ -2,6 +2,7 @@
 using System.IO;
 using System.Data;
 using MySql.Data.MySqlClient;
+using LumenWorks.Framework.IO.Csv;
 
 namespace CrossTxUpdateClient.DB
 {
@@ -90,38 +91,7 @@ namespace CrossTxUpdateClient.DB
             }
         }
 
-
-        public void Insert(String query)
-        {
-
-            if (this.OpenConnection() == true)
-            {       
-                MySqlCommand cmd = new MySqlCommand(query, connection);
-
-                cmd.ExecuteNonQuery();
-
-                this.CloseConnection();
-            }
-        }
-
-
-        public void Update(String query)
-        {
-
-            if (this.OpenConnection() == true)
-            {
-                MySqlCommand cmd = new MySqlCommand();
-                cmd.CommandText = query;
-                cmd.Connection = connection;
-
-                cmd.ExecuteNonQuery();
-
-                this.CloseConnection();
-            }
-        }
-
-
-        public void Delete(String query)
+        public void ExecuteQuery(String query)
         {
 
             if (this.OpenConnection() == true)
@@ -131,6 +101,96 @@ namespace CrossTxUpdateClient.DB
 
                 this.CloseConnection();
             }
+        }
+
+        public void SortedInsert()
+        {
+
+            try(CsvReader reader = new CsvReader(new FileReader("sampleFile.csv"));){
+
+                QueryGen generator = new QueryGen(reader.readNext());
+
+                String[] nextLine;
+                String[] NPIOrganizationData = {"NPI",
+                                            "Name",
+                                            "OtherName",
+                                            "OtherNameTypeCode",
+                                            "FirstLineMailingAddress",
+                                            "SecondLineMailingAddress",
+                                            "MailingAddressCity",
+                                            "MailingAddressState",
+                                            "MailingAddressPostalCode",
+                                            "MailingAddressCountryCode",
+                                            "MailingAddressTelephone",
+                                            "MailingAddressFax",
+                                            "FirstLinePracticeAddress",
+                                            "SecondLinePracticeAddress",
+                                            "PracticeAddressCity",
+                                            "PracticeAddressState",
+                                            "PracticeAddressPostalCode",
+                                            "PracticeAddressCountryCode",
+                                            "PracticeAddressTelephone",
+                                            "PracticeAddressFax",
+                                            "AuthorizedOfficialLastName",
+                                            "AuthorizedOfficialFirstName",
+                                            "AuthorizedOfficialTitle",
+                                            "AuthorizedOfficialCredential",
+                                            "AuthorizedOfficialTelephone",
+                                            "TaxonomyCode1",
+                                            "LicenseNumber1",
+                                            "LicenseStateCode1",
+                                            "TaxonomySwitch1",
+                                            "IsSoleProprietor",
+                                            "IsOrganizationSubpart",
+                                            "DeactivationDate"};
+
+                String[] NPIProviderData = {"NPI",
+                                        "ProviderLastName",
+                                        "ProviderFirstName",
+                                        "ProviderNamePrefix",
+                                        "ProviderNameSuffix",
+                                        "ProviderCredentialText",
+                                        "FirstLineMailingAddress",
+                                        "SecondLineMailingAddress",
+                                        "MailingAddressCity",
+                                        "MailingAddressState",
+                                        "MailingAddressPostalCode",
+                                        "MailingAddressCountryCode",
+                                        "MailingAddressTelephone",
+                                        "MailingAddressFax",
+                                        "FirstLinePracticeAddress",
+                                        "SecondLinePracticeAddress",
+                                        "PracticeAddressCity",
+                                        "PracticeAddressPostalCode",
+                                        "PracticeAddressCountryCode",
+                                        "PracticeAddressTelephone",
+                                        "PracticeAddressFaxNumber",
+                                        "TaxonomyCode1",
+                                        "LicenseNumber1",
+                                        "LicenseStateCode1",
+                                        "TaxonomySwitch1",
+                                        "IsSoleProprietor",
+                                        "DeactivationDate"};
+
+                int counter = 0;
+                String Table1Query;
+                String Table2Query;
+
+                while ((nextLine = reader.readNext()) != null) {
+                    ++counter;
+                    Console.Write(generator.makeQuery(NPIOrganizationData, nextLine));
+                    Console.Write(generator.makeQuery(NPIProviderData, nextLine));
+                    Console.Write(counter);
+
+                    ExecuteQuery(generator.makeQuery(NPIOrganizationData, nextLine));
+                    ExecuteQuery(generator.makeQuery(NPIProviderData, nextLine));
+                }
+
+            }
+            } catch (MySqlException ex) {
+                Console.Write("Error occurred:" + ex);
+            }
+
         }
 
     }
