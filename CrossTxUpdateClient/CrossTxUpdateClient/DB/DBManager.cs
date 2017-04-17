@@ -115,7 +115,7 @@ namespace CrossTxUpdateClient.DB
         {
 
             try{
-                CsvReader reader = new CsvReader(new StringReader(filePath), true);
+                CsvReader reader = new CsvReader(new StreamReader(filePath), true);
                 QueryGen generator = new QueryGen(reader.GetFieldHeaders());
 
                 String[] NPIOrganizationData = {"NPI",
@@ -184,7 +184,7 @@ namespace CrossTxUpdateClient.DB
                 String Table2Query;
 
                 while (reader.ReadNextRecord()) {
-                    string[] line = null;
+                    string[] line = new string[330];
 
                     ++counter;
                     reader.CopyCurrentRecordTo(line);
