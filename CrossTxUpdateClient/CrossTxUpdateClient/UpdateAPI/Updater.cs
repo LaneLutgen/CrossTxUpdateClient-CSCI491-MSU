@@ -31,7 +31,8 @@ namespace CrossTxUpdateClient.UpdateAPI
             downloadMngr = new DownloadManager(path, zipPath);
 
             //This is hardcoded for now but ideally they will want to plug in their DB info
-            dbMmgr = new DBManager("127.0.0.1", "nppes1", "uid", "password");
+            dbMmgr = new DBManager("127.0.0.1", "nppes_1", "root", "4ppropri4teP4ssword");
+            dbMmgr.OpenConnection();
         }
 
         public bool DownloadFullCSV()

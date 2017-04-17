@@ -46,7 +46,7 @@ namespace CrossTxUpdateClient.DB
         }
 
 
-        private bool OpenConnection()
+        public bool OpenConnection()
         {
             try
             {
