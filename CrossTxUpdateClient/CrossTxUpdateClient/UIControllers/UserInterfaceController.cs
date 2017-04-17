@@ -141,7 +141,6 @@ namespace CrossTxUpdateClient.UIControllers
             mainWindow.progressBarLabel.Content = "Extracting File Contents. Please Wait...";
             mainWindow.progressBar.Value = 0;
             updater.UnzipFileAsync();
-            updater.AddToDB();
         }
 
         public void SetProgressLabelValue(string value)

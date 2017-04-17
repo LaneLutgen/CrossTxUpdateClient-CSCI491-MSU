@@ -80,17 +80,17 @@ namespace CrossTxUpdateClient.UpdateAPI
         /// <summary>
         /// This method should be called whenever we want to do a full upload of the data set
         /// </summary>
-        public void AddToDB()
+        public void AddToDB(string filePath)
         {
-            dbMmgr.SortedInsert(this.path);
+            dbMmgr.SortedInsert(filePath);
         }
 
         /// <summary>
         /// This method should be called whenever we want to do an update to existing entries in the database
         /// </summary>
-        public void UpdateDB()
+        public void UpdateDB(string filePath)
         {
-            dbMmgr.SortedInsert(this.path);
+            dbMmgr.SortedInsert(filePath);
         }
 
         /// <summary>
@@ -121,10 +121,12 @@ namespace CrossTxUpdateClient.UpdateAPI
             controller.SetProgressLabelValue("Download and Extraction Complete!");
 
             //Delete all files that aren't used
-            CleanupDownloadFolder();
+            string csvFile = CleanupDownloadFolder();
+
+            AddToDB(csvFile);
         }
 
-        private void CleanupDownloadFolder()
+        private string CleanupDownloadFolder()
         {
             DirectoryInfo di = new DirectoryInfo(this.path);
             FileInfo[] pdfFiles = di.GetFiles("*.pdf")
@@ -147,6 +149,11 @@ namespace CrossTxUpdateClient.UpdateAPI
                     File.Delete(file.FullName);
                 }
                 catch { }
+
+            FileInfo[] actualFile = di.GetFiles("*.csv")
+                                 .Where(p => p.Extension == ".csv").ToArray();
+
+            return actualFile[0].FullName;
         }
 
         private void CreateDirectory()
