@@ -22,7 +22,7 @@ namespace CrossTxUpdateClient.DB
 
         public String makeQuery(String[] insertColumns, String[] nextLine, string table, int[] columnIndeces)
         {
-             String insertInto = "INSERT INTO "+table+" (";
+             String insertInto = "REPLACE INTO "+table+" (";
              String values = " VALUES (";
              for(int i = 0; i < insertColumns.Length -1 ; i++)
              {

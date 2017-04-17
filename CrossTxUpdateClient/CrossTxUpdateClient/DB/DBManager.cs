@@ -53,7 +53,8 @@ namespace CrossTxUpdateClient.DB
         {
             try
             {
-                connection.Open();
+                if(connection.State == ConnectionState.Closed)
+                    connection.Open();
                 return true;
             }
             catch (MySqlException ex)
@@ -116,8 +117,6 @@ namespace CrossTxUpdateClient.DB
 
         public void SortedInsert(string filePath)
         {
-
-            try{
                 CsvReader reader = new CsvReader(new StreamReader(filePath), true);
                 QueryGen generator = new QueryGen(reader.GetFieldHeaders());
 
@@ -200,25 +199,35 @@ namespace CrossTxUpdateClient.DB
 
                     ++counter;
                     reader.CopyCurrentRecordTo(line);
-                    //Console.Write(generator.makeQuery(NPIOrganizationData, line, orgTable, organizationIndeces));
-                    //Console.Write(generator.makeQuery(NPIProviderData, line, provTable, providerIndexes));
-                    //Console.Write(counter);
+                    Console.WriteLine(generator.makeQuery(NPIOrganizationData, line, orgTable, organizationIndeces));
+                    Console.WriteLine(generator.makeQuery(NPIProviderData, line, provTable, providerIndexes));
+                    Console.WriteLine(counter);
+                    try
+                    {
+                        ExecuteQuery(generator.makeQuery(NPIOrganizationData, line, orgTable, organizationIndeces));
+                        
+                    }
+                    catch(MySqlException ex)
+                    {
+                        Console.WriteLine("USER ERROR, NOT DEVELOPER (Donnel you cheeky bastard)");
+                    }
 
-                    ExecuteQuery(generator.makeQuery(NPIOrganizationData, line, orgTable, organizationIndeces));
-                    ExecuteQuery(generator.makeQuery(NPIProviderData, line, provTable, providerIndexes));
+                    try
+                    {
+                        ExecuteQuery(generator.makeQuery(NPIProviderData, line, provTable, providerIndexes));
+                    }
+                    catch(MySqlException ex)
+                    {
+                        Console.WriteLine("USER ERROR, NOT DEVELOPER (Donnel you cheeky bastard)");
+                    }
+                    
                 }
 
                 Console.WriteLine(counter);
             
-            } catch (MySqlException ex) {
-                Console.Write("Error occurred:" + ex);
-            } catch (Exception e)
-            {
-                Console.WriteLine("OUT OF RAM OMG");
-            }
+            } 
 
         }
 
     }
 
-}
