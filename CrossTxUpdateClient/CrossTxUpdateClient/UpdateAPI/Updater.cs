@@ -119,6 +119,34 @@ namespace CrossTxUpdateClient.UpdateAPI
         private void unzipWorker_Complete(object sender, RunWorkerCompletedEventArgs e)
         {
             controller.SetProgressLabelValue("Download and Extraction Complete!");
+
+            //Delete all files that aren't used
+            CleanupDownloadFolder();
+        }
+
+        private void CleanupDownloadFolder()
+        {
+            DirectoryInfo di = new DirectoryInfo(this.path);
+            FileInfo[] pdfFiles = di.GetFiles("*.pdf")
+                                 .Where(p => p.Extension == ".pdf").ToArray();
+            foreach (FileInfo file in pdfFiles)
+                try
+                {
+                    file.Attributes = FileAttributes.Normal;
+                    File.Delete(file.FullName);
+                }
+                catch { }
+
+            FileInfo[] headerFiles = di.GetFiles("*FileHeader.csv")
+                                     .Where(p => p.Extension == ".csv").ToArray();
+
+            foreach (FileInfo file in headerFiles)
+                try
+                {
+                    file.Attributes = FileAttributes.Normal;
+                    File.Delete(file.FullName);
+                }
+                catch { }
         }
 
         private void CreateDirectory()
