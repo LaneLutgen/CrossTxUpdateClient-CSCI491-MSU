@@ -199,6 +199,9 @@ namespace CrossTxUpdateClient.DB
             
             } catch (MySqlException ex) {
                 Console.Write("Error occurred:" + ex);
+            } catch (Exception e)
+            {
+                Console.WriteLine("OUT OF RAM OMG");
             }
 
         }

@@ -31,7 +31,7 @@ namespace CrossTxUpdateClient.UpdateAPI
             downloadMngr = new DownloadManager(path, zipPath);
 
             //This is hardcoded for now but ideally they will want to plug in their DB info
-            dbMmgr = new DBManager("127.0.0.1", "nppes1", "uid", "password");
+            dbMmgr = new DBManager("127.0.0.1", "nppes1", "root", "password");
         }
 
         public bool DownloadFullCSV()
@@ -81,7 +81,7 @@ namespace CrossTxUpdateClient.UpdateAPI
         /// </summary>
         public void AddToDB()
         {
-
+            dbMmgr.SortedInsert(this.path);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace CrossTxUpdateClient.UpdateAPI
         /// </summary>
         public void UpdateDB()
         {
-
+            dbMmgr.SortedInsert(this.path);
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace CrossTxUpdateClient.UpdateAPI
         /// </summary>
         public void RemoveFromDB()
         {
-
+            //dbMngr.Remove();   
         }
 
         public void UnzipFileAsync()
