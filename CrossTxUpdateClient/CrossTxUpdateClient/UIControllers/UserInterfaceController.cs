@@ -66,7 +66,7 @@ namespace CrossTxUpdateClient.UIControllers
             return ConfigurationManager.TimeBetweenUpdates;
         }
 
-        public void InitBackgroundWorker()
+        public void StartDownloadAsync()
         {
             BackgroundWorker worker = new BackgroundWorker();
             worker.WorkerReportsProgress = true;
@@ -82,7 +82,8 @@ namespace CrossTxUpdateClient.UIControllers
             mainWindow.progressBarLabel.Content = "Downloading Full Data Set...";
             if(updater.DownloadFullCSV())
             {
-                InitBackgroundWorker();
+                StartDownloadAsync();
+                updater.AddToDB();
             }
             else
             {
@@ -96,7 +97,8 @@ namespace CrossTxUpdateClient.UIControllers
             mainWindow.progressBarLabel.Content = "Downloading Latest Update File...";
             if (updater.DownloadLatestUpdateFile())
             {
-                InitBackgroundWorker();
+                StartDownloadAsync();
+                updater.UpdateDB();
             }
             else
             {
@@ -110,7 +112,8 @@ namespace CrossTxUpdateClient.UIControllers
             mainWindow.progressBarLabel.Content = "Downloading Latest Deactivation File...";
             if(updater.DownloadLatestDeactivationFile())
             {
-                InitBackgroundWorker();
+                StartDownloadAsync();
+                updater.RemoveFromDB();
             }
             else
             {

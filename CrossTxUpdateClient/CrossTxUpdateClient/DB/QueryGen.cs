@@ -23,27 +23,29 @@ namespace CrossTxUpdateClient.DB
 
         public String makeQuery(String[] insertColumns, String[] nextLine)
         {
-            Iterator<String> first = Arrays.asList(insertColumns).iterator();
-            String insertInto = "insert into table (";
-            String values = " values (";
-            while (first.hasNext())
-            {
-                String key = first.next();
-                insertInto += key;
-                values += "'" + nextLine[column_index."?????"(key)].trim() + "'";
-                if (first.hasNext())
-                {
-                    insertInto += ",";
-                    values += ",";
-                }
-                else
-                {
-                    insertInto += ")";
-                    values += ")";
-                }
-            }
-            String query = insertInto + values + ";";
-            return query;
+            /* Iterator<String> first = Arrays.asList(insertColumns).iterator();
+             String insertInto = "insert into table (";
+             String values = " values (";
+             while (first.hasNext())
+             {
+                 String key = first.next();
+                 insertInto += key;
+                 values += "'" + nextLine[column_index."?????"(key)].trim() + "'";
+                 if (first.hasNext())
+                 {
+                     insertInto += ",";
+                     values += ",";
+                 }
+                 else
+                 {
+                     insertInto += ")";
+                     values += ")";
+                 }
+             }
+             String query = insertInto + values + ";";
+             return query;
+             */
+            return null;
         }
     }
 

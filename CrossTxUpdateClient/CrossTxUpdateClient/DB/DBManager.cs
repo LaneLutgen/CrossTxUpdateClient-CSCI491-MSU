@@ -18,23 +18,31 @@ namespace CrossTxUpdateClient.DB
         private string password;
 
 
-        public DBManager()
+        public DBManager(string server, string database, string uid, string password)
         {
-            Initialize();
+            Initialize(server, database, uid, password);
         }
 
 
-        private void Initialize()
+        private void Initialize(string server, string database, string uid, string password)
         {
-            server = "localhost";
-            database = "crosstx";
-            uid = "root";
-            password = "";
+            this.server = server;
+            this.database = database;
+            this.uid = uid;
+            this.password = password;
             string connectionString;
             connectionString = "server=" + server + ";" + "database=" +
             database + ";" + "uid=" + uid + ";" + "password=" + password + ";";
 
-            connection = new MySqlConnection(connectionString);
+            try
+            {
+                connection = new MySqlConnection(connectionString);
+            }
+            catch(MySqlException e)
+            {
+                Console.WriteLine("Error connecting to the database");
+            }
+            
         }
 
 
@@ -103,14 +111,13 @@ namespace CrossTxUpdateClient.DB
             }
         }
 
-        public void SortedInsert()
+        public void SortedInsert(string filePath)
         {
 
-            try(CsvReader reader = new CsvReader(new FileReader("sampleFile.csv"));){
+            try{
+                CsvReader reader = new CsvReader(new StringReader(filePath), true);
+                QueryGen generator = new QueryGen(reader.GetFieldHeaders());
 
-                QueryGen generator = new QueryGen(reader.readNext());
-
-                String[] nextLine;
                 String[] NPIOrganizationData = {"NPI",
                                             "Name",
                                             "OtherName",
@@ -176,17 +183,20 @@ namespace CrossTxUpdateClient.DB
                 String Table1Query;
                 String Table2Query;
 
-                while ((nextLine = reader.readNext()) != null) {
+                while (reader.ReadNextRecord()) {
+                    string[] line = null;
+
                     ++counter;
-                    Console.Write(generator.makeQuery(NPIOrganizationData, nextLine));
-                    Console.Write(generator.makeQuery(NPIProviderData, nextLine));
+                    reader.CopyCurrentRecordTo(line);
+                    Console.Write(generator.makeQuery(NPIOrganizationData, line));
+                    Console.Write(generator.makeQuery(NPIProviderData, line));
                     Console.Write(counter);
 
-                    ExecuteQuery(generator.makeQuery(NPIOrganizationData, nextLine));
-                    ExecuteQuery(generator.makeQuery(NPIProviderData, nextLine));
+                    ExecuteQuery(generator.makeQuery(NPIOrganizationData, line));
+                    ExecuteQuery(generator.makeQuery(NPIProviderData, line));
                 }
 
-            }
+            
             } catch (MySqlException ex) {
                 Console.Write("Error occurred:" + ex);
             }

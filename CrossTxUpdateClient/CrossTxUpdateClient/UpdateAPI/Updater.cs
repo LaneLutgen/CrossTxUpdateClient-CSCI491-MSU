@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using CrossTxUpdateClient.UIControllers;
+using CrossTxUpdateClient.DB;
 
 namespace CrossTxUpdateClient.UpdateAPI
 {
@@ -19,6 +20,7 @@ namespace CrossTxUpdateClient.UpdateAPI
         private string zipPath;
 
         private DownloadManager downloadMngr;
+        private DBManager dbMmgr;
         private UserInterfaceController controller;
 
         public Updater(UserInterfaceController controller)
@@ -27,13 +29,16 @@ namespace CrossTxUpdateClient.UpdateAPI
             path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\CrossTxDownloadTest";
             zipPath = path + "\\csv.zip";
             downloadMngr = new DownloadManager(path, zipPath);
+
+            //This is hardcoded for now but ideally they will want to plug in their DB info
+            dbMmgr = new DBManager("127.0.0.1", "nppes1", "uid", "password");
         }
 
         public bool DownloadFullCSV()
         {
             bool successfull = false;
 
-            if(downloadMngr.CSVLinkFound)
+            if (downloadMngr.CSVLinkFound)
             {
                 CreateDirectory();
                 downloadMngr.DownloadFullCSV();
@@ -47,7 +52,7 @@ namespace CrossTxUpdateClient.UpdateAPI
         {
             bool successfull = false;
 
-            if(downloadMngr.UpdateLinkFound)
+            if (downloadMngr.UpdateLinkFound)
             {
                 CreateDirectory();
                 downloadMngr.DownloadUpdateFile();
@@ -61,7 +66,7 @@ namespace CrossTxUpdateClient.UpdateAPI
         {
             bool successfull = false;
 
-            if(downloadMngr.DeactivationLinkFound)
+            if (downloadMngr.DeactivationLinkFound)
             {
                 CreateDirectory();
                 downloadMngr.DownloadDeactivationFile();
@@ -69,6 +74,31 @@ namespace CrossTxUpdateClient.UpdateAPI
             }
 
             return successfull;
+        }
+
+        /// <summary>
+        /// This method should be called whenever we want to do a full upload of the data set
+        /// </summary>
+        public void AddToDB()
+        {
+
+        }
+
+        /// <summary>
+        /// This method should be called whenever we want to do an update to existing entries in the database
+        /// </summary>
+        public void UpdateDB()
+        {
+
+        }
+
+        /// <summary>
+        /// This method should be called whenever we want to do a removal of entries in the database,
+        /// this includes storing previously deactivated files
+        /// </summary>
+        public void RemoveFromDB()
+        {
+
         }
 
         public void UnzipFileAsync()
