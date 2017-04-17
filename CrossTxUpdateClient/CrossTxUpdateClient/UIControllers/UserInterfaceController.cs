@@ -83,7 +83,7 @@ namespace CrossTxUpdateClient.UIControllers
             if(updater.DownloadFullCSV())
             {
                 StartDownloadAsync();
-                updater.AddToDB();
+                //updater.AddToDB();
             }
             else
             {
@@ -98,7 +98,7 @@ namespace CrossTxUpdateClient.UIControllers
             if (updater.DownloadLatestUpdateFile())
             {
                 StartDownloadAsync();
-                updater.UpdateDB();
+                //updater.UpdateDB();
             }
             else
             {
@@ -113,7 +113,7 @@ namespace CrossTxUpdateClient.UIControllers
             if(updater.DownloadLatestDeactivationFile())
             {
                 StartDownloadAsync();
-                updater.RemoveFromDB();
+                //updater.RemoveFromDB();
             }
             else
             {
@@ -141,6 +141,7 @@ namespace CrossTxUpdateClient.UIControllers
             mainWindow.progressBarLabel.Content = "Extracting File Contents. Please Wait...";
             mainWindow.progressBar.Value = 0;
             updater.UnzipFileAsync();
+            updater.AddToDB();
         }
 
         public void SetProgressLabelValue(string value)
