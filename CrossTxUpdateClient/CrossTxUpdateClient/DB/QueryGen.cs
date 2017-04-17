@@ -13,7 +13,6 @@ namespace CrossTxUpdateClient.DB
 
         public QueryGen(String[] headers)
         {
-
             column_index = new Dictionary<String, int>();
             for (int i = 0; i < headers.Length; i++)
             {
@@ -23,29 +22,31 @@ namespace CrossTxUpdateClient.DB
 
         public String makeQuery(String[] insertColumns, String[] nextLine)
         {
-            /* Iterator<String> first = Arrays.asList(insertColumns).iterator();
              String insertInto = "insert into table (";
              String values = " values (";
-             while (first.hasNext())
+             for(int i = 0; i < insertColumns.Length; i++)
              {
-                 String key = first.next();
-                 insertInto += key;
-                 values += "'" + nextLine[column_index."?????"(key)].trim() + "'";
-                 if (first.hasNext())
-                 {
-                     insertInto += ",";
-                     values += ",";
-                 }
-                 else
-                 {
-                     insertInto += ")";
-                     values += ")";
-                 }
-             }
+                String key = insertColumns[i];
+                insertInto += key;
+
+                int index;
+                column_index.TryGetValue(key, out index);
+
+                values += "'" + nextLine[index].Trim() + "'";
+                if (i == (insertColumns.Length - 1))
+                {
+                    insertInto += ",";
+                    values += ",";
+                }
+                else
+                {
+                    insertInto += ")";
+                    values += ")";
+                }
+            }
+
              String query = insertInto + values + ";";
              return query;
-             */
-            return null;
         }
     }
 
