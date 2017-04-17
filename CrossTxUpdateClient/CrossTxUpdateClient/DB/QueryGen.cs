@@ -20,28 +20,25 @@ namespace CrossTxUpdateClient.DB
             }
         }
 
-        public String makeQuery(String[] insertColumns, String[] nextLine)
+        public String makeQuery(String[] insertColumns, String[] nextLine, string table, int[] columnIndeces)
         {
-             String insertInto = "insert into table (";
-             String values = " values (";
-             for(int i = 0; i < insertColumns.Length; i++)
+             String insertInto = "INSERT INTO "+table+" (";
+             String values = " VALUES (";
+             for(int i = 0; i < insertColumns.Length -1 ; i++)
              {
                 String key = insertColumns[i];
                 insertInto += key;
 
-                int index;
-                column_index.TryGetValue(key, out index);
-
-                values += "'" + nextLine[index].Trim() + "'";
-                if (i == (insertColumns.Length - 1))
-                {
-                    insertInto += ",";
-                    values += ",";
-                }
-                else
+                values += "'" + nextLine[columnIndeces[i]].Trim() + "'";
+                if (i == (insertColumns.Length - 2))
                 {
                     insertInto += ")";
                     values += ")";
+                }
+                else
+                {
+                    insertInto += ",";
+                    values += ",";
                 }
             }
 

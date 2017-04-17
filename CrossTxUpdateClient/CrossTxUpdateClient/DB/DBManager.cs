@@ -17,6 +17,9 @@ namespace CrossTxUpdateClient.DB
         private string uid;
         private string password;
 
+        private const string orgTable = "npi_organization_data";
+        private const string provTable = "npi_provider_data";
+
 
         public DBManager(string server, string database, string uid, string password)
         {
@@ -118,6 +121,12 @@ namespace CrossTxUpdateClient.DB
                 CsvReader reader = new CsvReader(new StreamReader(filePath), true);
                 QueryGen generator = new QueryGen(reader.GetFieldHeaders());
 
+                int[] organizationIndeces = new int[]
+                    {0, 4, 11, 12, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 42, 43, 45, 313, 46, 47, 48, 49, 50, 307, 308};
+
+                int[] providerIndexes = new int[]
+                    {0, 5, 6, 8, 9, 10, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 33, 34, 35, 47, 48, 49, 50, 307};
+
                 String[] NPIOrganizationData = {"NPI",
                                             "Name",
                                             "OtherName",
@@ -183,19 +192,23 @@ namespace CrossTxUpdateClient.DB
                 String Table1Query;
                 String Table2Query;
 
+                //Skip header line
+                //reader.ReadNextRecord();
+
                 while (reader.ReadNextRecord()) {
                     string[] line = new string[330];
 
                     ++counter;
                     reader.CopyCurrentRecordTo(line);
-                    Console.Write(generator.makeQuery(NPIOrganizationData, line));
-                    Console.Write(generator.makeQuery(NPIProviderData, line));
-                    Console.Write(counter);
+                    //Console.Write(generator.makeQuery(NPIOrganizationData, line, orgTable, organizationIndeces));
+                    //Console.Write(generator.makeQuery(NPIProviderData, line, provTable, providerIndexes));
+                    //Console.Write(counter);
 
-                    ExecuteQuery(generator.makeQuery(NPIOrganizationData, line));
-                    ExecuteQuery(generator.makeQuery(NPIProviderData, line));
+                    ExecuteQuery(generator.makeQuery(NPIOrganizationData, line, orgTable, organizationIndeces));
+                    ExecuteQuery(generator.makeQuery(NPIProviderData, line, provTable, providerIndexes));
                 }
 
+                Console.WriteLine(counter);
             
             } catch (MySqlException ex) {
                 Console.Write("Error occurred:" + ex);
