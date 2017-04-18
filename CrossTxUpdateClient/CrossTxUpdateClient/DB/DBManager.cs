@@ -229,5 +229,19 @@ namespace CrossTxUpdateClient.DB
 
         }
 
+        public void deleteEntry(String NPI)
+        {
+
+            if (this.OpenConnection() == true)
+            {
+
+                string query = "DELETE FROM npi_organization_data WHERE NPI='" + NPI + "'";
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+
+                cmd.ExecuteNonQuery();
+
+                this.CloseConnection();
+            }
+        }
     }
 
