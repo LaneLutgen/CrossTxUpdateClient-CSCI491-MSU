@@ -232,12 +232,14 @@ namespace CrossTxUpdateClient.DB
         /*Deletes a row that exists within either the npi_organization_data table 
         *or the npi_provider_data, using the NPI as a key.
         */
-        public void Remove(string filePath)
+        public int Remove(string filePath)
         {
             CsvReader reader = new CsvReader(new StreamReader(filePath), true);
 
             string orginizationsTable = "npi_organization_data";
             string providersTable = "npi_provider_data";
+
+            int counter = 0;
 
             while (reader.ReadNextRecord())
             {
@@ -248,7 +250,11 @@ namespace CrossTxUpdateClient.DB
 
                 string query = "DELETE FROM " + orginizationsTable + " INNER JOIN " + providersTable + " WHERE " + orginizationsTable + ".NPI=" + NPI + " AND " + providersTable + ".NPI=" + NPI;
                 ExecuteQuery(query);
+
+                counter++;
             }
+
+            return counter;
         }
     }
 }

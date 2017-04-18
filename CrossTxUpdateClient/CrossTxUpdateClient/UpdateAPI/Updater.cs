@@ -6,8 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Bytescout.Spreadsheet;
 using CrossTxUpdateClient.UIControllers;
 using CrossTxUpdateClient.DB;
+
 
 namespace CrossTxUpdateClient.UpdateAPI
 {
@@ -98,7 +100,13 @@ namespace CrossTxUpdateClient.UpdateAPI
         /// </summary>
         public void RemoveFromDB(string filePath)
         {
-            dbMmgr.Remove(filePath);   
+            int numDeavtivated = dbMmgr.Remove(filePath);
+            if (numDeavtivated > 0) {
+                controller.SetProgressLabelValue("Sucessfully Deactivated "+ numDeavtivated + " Entries!");
+            }else
+            {
+                controller.SetProgressLabelValue("No Entries Deactivated!");
+            }
         }
 
         public void UnzipFileAsync()
@@ -135,6 +143,23 @@ namespace CrossTxUpdateClient.UpdateAPI
                 {
                     file.Attributes = FileAttributes.Normal;
                     File.Delete(file.FullName);
+                }
+                catch { }
+
+            FileInfo[] deactivationFile = di.GetFiles("*.xlsx")
+                                 .Where(p => p.Extension == ".xlsx").ToArray();
+
+            foreach (FileInfo file in deactivationFile)
+                try
+                {
+                    Spreadsheet document = new Spreadsheet();
+ 
+                    document.LoadFromFile(file.FullName);
+                    string csvFile = this.path + "NPPESDeactivatedNPIReport.csv";
+
+                    // Save the document as CSV file
+                    document.Workbook.Worksheets[0].SaveAsCSV(csvFile);
+                    document.Close();
                 }
                 catch { }
 
