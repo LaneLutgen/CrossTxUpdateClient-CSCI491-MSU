@@ -41,11 +41,11 @@ namespace CrossTxUpdateClient.DB
             {
                 connection = new MySqlConnection(connectionString);
             }
-            catch(MySqlException e)
+            catch (MySqlException e)
             {
                 Console.WriteLine("Error connecting to the database");
             }
-            
+
         }
 
 
@@ -53,7 +53,7 @@ namespace CrossTxUpdateClient.DB
         {
             try
             {
-                if(connection.State == ConnectionState.Closed)
+                if (connection.State == ConnectionState.Closed)
                     connection.Open();
                 return true;
             }
@@ -117,16 +117,16 @@ namespace CrossTxUpdateClient.DB
 
         public void SortedInsert(string filePath)
         {
-                CsvReader reader = new CsvReader(new StreamReader(filePath), true);
-                QueryGen generator = new QueryGen(reader.GetFieldHeaders());
+            CsvReader reader = new CsvReader(new StreamReader(filePath), true);
+            QueryGen generator = new QueryGen(reader.GetFieldHeaders());
 
-                int[] organizationIndeces = new int[]
-                    {0, 4, 11, 12, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 42, 43, 45, 313, 46, 47, 48, 49, 50, 307, 308};
+            int[] organizationIndeces = new int[]
+                {0, 4, 11, 12, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 42, 43, 45, 313, 46, 47, 48, 49, 50, 307, 308};
 
-                int[] providerIndexes = new int[]
-                    {0, 5, 6, 8, 9, 10, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 33, 34, 35, 47, 48, 49, 50, 307};
+            int[] providerIndexes = new int[]
+                {0, 5, 6, 8, 9, 10, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 33, 34, 35, 47, 48, 49, 50, 307};
 
-                String[] NPIOrganizationData = {"NPI",
+            String[] NPIOrganizationData = {"NPI",
                                             "Name",
                                             "OtherName",
                                             "OtherNameTypeCode",
@@ -159,7 +159,7 @@ namespace CrossTxUpdateClient.DB
                                             "IsOrganizationSubpart",
                                             "DeactivationDate"};
 
-                String[] NPIProviderData = {"NPI",
+            String[] NPIProviderData = {"NPI",
                                         "ProviderLastName",
                                         "ProviderFirstName",
                                         "ProviderNamePrefix",
@@ -187,61 +187,69 @@ namespace CrossTxUpdateClient.DB
                                         "IsSoleProprietor",
                                         "DeactivationDate"};
 
-                int counter = 0;
-                String Table1Query;
-                String Table2Query;
+            int counter = 0;
+            String Table1Query;
+            String Table2Query;
 
-                //Skip header line
-                //reader.ReadNextRecord();
+            //Skip header line
+            //reader.ReadNextRecord();
 
-                while (reader.ReadNextRecord()) {
-                    string[] line = new string[330];
+            while (reader.ReadNextRecord())
+            {
+                string[] line = new string[330];
 
-                    ++counter;
-                    reader.CopyCurrentRecordTo(line);
-                    Console.WriteLine(generator.makeQuery(NPIOrganizationData, line, orgTable, organizationIndeces));
-                    Console.WriteLine(generator.makeQuery(NPIProviderData, line, provTable, providerIndexes));
-                    Console.WriteLine(counter);
-                    try
-                    {
-                        ExecuteQuery(generator.makeQuery(NPIOrganizationData, line, orgTable, organizationIndeces));
-                        
-                    }
-                    catch(MySqlException ex)
-                    {
-                        Console.WriteLine("USER ERROR, NOT DEVELOPER (Donnel you cheeky bastard)");
-                    }
+                ++counter;
+                reader.CopyCurrentRecordTo(line);
+                Console.WriteLine(generator.makeQuery(NPIOrganizationData, line, orgTable, organizationIndeces));
+                Console.WriteLine(generator.makeQuery(NPIProviderData, line, provTable, providerIndexes));
+                Console.WriteLine(counter);
+                try
+                {
+                    ExecuteQuery(generator.makeQuery(NPIOrganizationData, line, orgTable, organizationIndeces));
 
-                    try
-                    {
-                        ExecuteQuery(generator.makeQuery(NPIProviderData, line, provTable, providerIndexes));
-                    }
-                    catch(MySqlException ex)
-                    {
-                        Console.WriteLine("USER ERROR, NOT DEVELOPER (Donnel you cheeky bastard)");
-                    }
-                    
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("USER ERROR, NOT DEVELOPER (Donnel you cheeky bastard)");
                 }
 
-                Console.WriteLine(counter);
-            
-            } 
+                try
+                {
+                    ExecuteQuery(generator.makeQuery(NPIProviderData, line, provTable, providerIndexes));
+                }
+                catch (MySqlException ex)
+                {
+                    Console.WriteLine("USER ERROR, NOT DEVELOPER (Donnel you cheeky bastard)");
+                }
+
+            }
+
+            Console.WriteLine(counter);
 
         }
 
-        public void deleteEntry(String NPI)
+
+        /*Deletes a row that exists within either the npi_organization_data table 
+        *or the npi_provider_data, using the NPI as a key.
+        */
+        public void Remove(string filePath)
         {
+            CsvReader reader = new CsvReader(new StreamReader(filePath), true);
 
-            if (this.OpenConnection() == true)
+            string orginizationsTable = "npi_organization_data";
+            string providersTable = "npi_provider_data";
+
+            while (reader.ReadNextRecord())
             {
+                string[] line = new string[2];
 
-                string query = "DELETE FROM npi_organization_data WHERE NPI='" + NPI + "'";
-                MySqlCommand cmd = new MySqlCommand(query, connection);
+                reader.CopyCurrentRecordTo(line);
+                string NPI = line[0];
 
-                cmd.ExecuteNonQuery();
-
-                this.CloseConnection();
+                string query = "DELETE FROM " + orginizationsTable + " INNER JOIN " + providersTable + " WHERE " + orginizationsTable + ".NPI=" + NPI + " AND " + providersTable + ".NPI=" + NPI;
+                ExecuteQuery(query);
             }
         }
     }
+}
 

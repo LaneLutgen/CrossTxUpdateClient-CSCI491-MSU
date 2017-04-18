@@ -96,9 +96,9 @@ namespace CrossTxUpdateClient.UpdateAPI
         /// This method should be called whenever we want to do a removal of entries in the database,
         /// this includes storing previously deactivated files
         /// </summary>
-        public void RemoveFromDB()
+        public void RemoveFromDB(string filePath)
         {
-            //dbMngr.Remove();   
+            dbMmgr.Remove(filePath);   
         }
 
         public void UnzipFileAsync()
