@@ -74,6 +74,7 @@
                 <Label x:Name="labelServerName_Copy1" Content="Username" Grid.Column="1" HorizontalAlignment="Left" Margin="50,258,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.321,0.192"/>
                 <PasswordBox x:Name="passwordBox" Grid.Column="1" HorizontalAlignment="Left" Margin="160,301,0,0" VerticalAlignment="Top" Width="464" Height="23" Grid.ColumnSpan="3"/>
                 <Label x:Name="labelServerName_Copy2" Content="Password" Grid.Column="1" HorizontalAlignment="Left" Margin="53,301,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.321,0.192"/>
+                <Button x:Name="saveButton" Grid.ColumnSpan="2" Content="Save Settings" Grid.Column="1" HorizontalAlignment="Left" Margin="314,384,0,0" VerticalAlignment="Top" Width="110" Height="27" Click="saveButton_Click"/>
             </Grid>
         </TabItem>
     </TabControl>
