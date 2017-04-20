@@ -3,6 +3,8 @@ using System.IO;
 using System.Data;
 using MySql.Data.MySqlClient;
 using LumenWorks.Framework.IO.Csv;
+using System.ComponentModel;
+using CrossTxUpdateClient.UpdateAPI;
 
 namespace CrossTxUpdateClient.DB
 {
@@ -19,6 +21,9 @@ namespace CrossTxUpdateClient.DB
 
         private const string orgTable = "npi_organization_data";
         private const string provTable = "npi_provider_data";
+
+        private string filePath;
+        private NPI_TYPE type;
 
 
         public DBManager(string server, string database, string uid, string password)
@@ -115,7 +120,19 @@ namespace CrossTxUpdateClient.DB
             }
         }
 
-        public void SortedInsert(string filePath)
+        public void SortedInsert(string filePath, NPI_TYPE type)
+        {
+            this.filePath = filePath;
+            this.type = type;
+
+            BackgroundWorker dbWorker = new BackgroundWorker();
+            dbWorker.DoWork += SortedInsert_DoWork;
+            dbWorker.RunWorkerCompleted += SortedInsert_Complete;
+
+            dbWorker.RunWorkerAsync();
+        }
+
+        private void SortedInsert_DoWork(object sender, DoWorkEventArgs e)
         {
             CsvReader reader = new CsvReader(new StreamReader(filePath), true);
             QueryGen generator = new QueryGen(reader.GetFieldHeaders());
@@ -205,7 +222,7 @@ namespace CrossTxUpdateClient.DB
                 Console.WriteLine(counter);
                 try
                 {
-                    if(line[1].Trim().Equals("1"))
+                    if (line[1].Trim().Equals("1"))
                         ExecuteQuery(generator.makeQuery(NPIOrganizationData, line, orgTable, organizationIndeces));
                     else
                         ExecuteQuery(generator.makeQuery(NPIProviderData, line, provTable, providerIndexes));
@@ -218,8 +235,26 @@ namespace CrossTxUpdateClient.DB
             }
 
             Console.WriteLine(counter);
-
         }
+
+        private void SortedInsert_Complete(object sender, RunWorkerCompletedEventArgs e)
+        {
+            switch(type)
+            {
+                case NPI_TYPE.Full:
+                    AddLinkToDB(DownloadManager.CsvURL, type.ToString());
+                    break;
+                case NPI_TYPE.Update:
+                    AddLinkToDB(DownloadManager.UpdateURL, type.ToString());
+                    break;
+                case NPI_TYPE.Deactivation:
+                    AddLinkToDB(DownloadManager.DeactivationURL, type.ToString());
+                    break;
+            }
+            
+        }
+
+        
 
 
         /*Deletes a row that exists within either the npi_organization_data table 

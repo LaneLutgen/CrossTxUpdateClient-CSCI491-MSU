@@ -25,6 +25,8 @@ namespace CrossTxUpdateClient.UpdateAPI
         private DBManager dbMmgr;
         private UserInterfaceController controller;
 
+        private NPI_TYPE npiType = NPI_TYPE.None;
+
         public Updater(UserInterfaceController controller)
         {
             this.controller = controller;
@@ -44,6 +46,7 @@ namespace CrossTxUpdateClient.UpdateAPI
             {
                 CreateDirectory();
                 downloadMngr.DownloadFullCSV();
+                npiType = NPI_TYPE.Full;
                 successfull = true;
             }
 
@@ -58,6 +61,7 @@ namespace CrossTxUpdateClient.UpdateAPI
             {
                 CreateDirectory();
                 downloadMngr.DownloadUpdateFile();
+                npiType = NPI_TYPE.Update;
                 successfull = true;
             }
 
@@ -72,6 +76,7 @@ namespace CrossTxUpdateClient.UpdateAPI
             {
                 CreateDirectory();
                 downloadMngr.DownloadDeactivationFile();
+                npiType = NPI_TYPE.Deactivation;
                 successfull = true;
             }
 
@@ -83,8 +88,7 @@ namespace CrossTxUpdateClient.UpdateAPI
         /// </summary>
         public void AddToDB(string filePath)
         {
-            dbMmgr.SortedInsert(filePath);
-            PublishLink(downloadMngr.csvURL, "Full");
+            dbMmgr.SortedInsert(filePath, NPI_TYPE.Full);
         }
 
         /// <summary>
@@ -92,8 +96,7 @@ namespace CrossTxUpdateClient.UpdateAPI
         /// </summary>
         public void UpdateDB(string filePath)
         {
-            dbMmgr.SortedInsert(filePath);
-            PublishLink(downloadMngr.updateURL, "Update");
+            dbMmgr.SortedInsert(filePath, NPI_TYPE.Update);
         }
 
         /// <summary>
@@ -109,13 +112,11 @@ namespace CrossTxUpdateClient.UpdateAPI
             {
                 controller.SetProgressLabelValue("No Entries Deactivated!");
             }
-
-            PublishLink(downloadMngr.deactivationURL, "Deactivation");
         }
 
-        private void PublishLink(string link, string type)
+        private void PublishLink(string link, NPI_TYPE type)
         {
-            dbMmgr.AddLinkToDB(link, type);
+            dbMmgr.AddLinkToDB(link, type.ToString());
         }
 
         public void UnzipFileAsync()
@@ -139,7 +140,19 @@ namespace CrossTxUpdateClient.UpdateAPI
             //Delete all files that aren't used
             string csvFile = CleanupDownloadFolder();
 
-            AddToDB(csvFile);
+            switch (npiType)
+            {
+                case NPI_TYPE.Full:
+                    AddToDB(csvFile);
+                    break;
+                case NPI_TYPE.Update:
+                    UpdateDB(csvFile);
+                    break;
+                case NPI_TYPE.Deactivation:
+                    RemoveFromDB(csvFile);
+                    break;
+            }
+            
         }
 
         private string CleanupDownloadFolder()
@@ -206,5 +219,13 @@ namespace CrossTxUpdateClient.UpdateAPI
         {
             return downloadMngr.DownloadInProgress;
         }
+    }
+
+    public enum NPI_TYPE
+    {
+        Full,
+        Update,
+        Deactivation,
+        None
     }
 }

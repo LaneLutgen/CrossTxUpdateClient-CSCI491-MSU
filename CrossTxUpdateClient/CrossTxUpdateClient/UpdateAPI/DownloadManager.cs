@@ -39,9 +39,9 @@ namespace CrossTxUpdateClient.UpdateAPI
         private const string url = "http://download.cms.gov/nppes";
         private const string baseURL = "http://download.cms.gov/nppes/NPI_Files.html";
 
-        public string csvURL;
-        public string updateURL;
-        public string deactivationURL;
+        public static string CsvURL;
+        public static string UpdateURL;
+        public static string DeactivationURL;
 
         private string zipPath;
 
@@ -73,9 +73,9 @@ namespace CrossTxUpdateClient.UpdateAPI
             UpdateLinkFound= updateLink == null ? false : true;
             DeactivationLinkFound = deactivationLink == null ? false : true;
 
-            csvURL = url + csvLink;
-            updateURL = url + updateLink;
-            deactivationURL = url + deactivationLink;
+            CsvURL = url + csvLink;
+            UpdateURL = url + updateLink;
+            DeactivationURL = url + deactivationLink;
         }
 
         private string FindLatestCSVDownloadURL(List<HtmlNode> links)
@@ -183,7 +183,7 @@ namespace CrossTxUpdateClient.UpdateAPI
                 webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(CSVDownload_ProgressChanged);
 
                 //This can throw a WebException but we don't want to catch it here
-                webClient.DownloadFileAsync(new Uri(csvURL), zipPath);
+                webClient.DownloadFileAsync(new Uri(CsvURL), zipPath);
             }
         }
 
@@ -209,7 +209,7 @@ namespace CrossTxUpdateClient.UpdateAPI
                 webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(UpdateFileDownload_ProgressChanged);
 
                 //This can throw a WebException but we don't want to catch it here
-                webClient.DownloadFileAsync(new Uri(updateURL), zipPath); 
+                webClient.DownloadFileAsync(new Uri(UpdateURL), zipPath); 
             }
         }
 
@@ -235,7 +235,7 @@ namespace CrossTxUpdateClient.UpdateAPI
                 webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DeactivationDownload_ProgressChanged);
 
                 //This can throw a WebException but we don't want to catch it here
-                webClient.DownloadFileAsync(new Uri(deactivationURL), zipPath);
+                webClient.DownloadFileAsync(new Uri(DeactivationURL), zipPath);
             }
         }
 
