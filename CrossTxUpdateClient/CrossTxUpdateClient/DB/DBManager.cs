@@ -205,17 +205,10 @@ namespace CrossTxUpdateClient.DB
                 Console.WriteLine(counter);
                 try
                 {
-                    ExecuteQuery(generator.makeQuery(NPIOrganizationData, line, orgTable, organizationIndeces));
-
-                }
-                catch (MySqlException ex)
-                {
-                    Console.WriteLine("USER ERROR, NOT DEVELOPER (Donnel you cheeky bastard)");
-                }
-
-                try
-                {
-                    ExecuteQuery(generator.makeQuery(NPIProviderData, line, provTable, providerIndexes));
+                    if(line[1].Trim().Equals("1"))
+                        ExecuteQuery(generator.makeQuery(NPIOrganizationData, line, orgTable, organizationIndeces));
+                    else
+                        ExecuteQuery(generator.makeQuery(NPIProviderData, line, provTable, providerIndexes));
                 }
                 catch (MySqlException ex)
                 {
