@@ -257,10 +257,13 @@ namespace CrossTxUpdateClient.DB
             return counter;
         }
 
+        public void AddLinkToDB(string link, string type)
         {
+            string[] headers = new string[] { "Link", "Date", "Type" };
 
             QueryGen generator = new QueryGen(headers);
 
+            string query = generator.makeDownloadLinkQuery(headers, new string[] { link, DateTime.Now.ToString(), type }, "past_links");
             try
             {
                 ExecuteQuery(query);

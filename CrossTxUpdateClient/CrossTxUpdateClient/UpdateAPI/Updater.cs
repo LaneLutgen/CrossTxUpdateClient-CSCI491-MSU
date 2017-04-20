@@ -84,6 +84,7 @@ namespace CrossTxUpdateClient.UpdateAPI
         public void AddToDB(string filePath)
         {
             dbMmgr.SortedInsert(filePath);
+            PublishLink(downloadMngr.csvURL, "Full");
         }
 
         /// <summary>
@@ -92,6 +93,7 @@ namespace CrossTxUpdateClient.UpdateAPI
         public void UpdateDB(string filePath)
         {
             dbMmgr.SortedInsert(filePath);
+            PublishLink(downloadMngr.updateURL, "Update");
         }
 
         /// <summary>
@@ -107,6 +109,13 @@ namespace CrossTxUpdateClient.UpdateAPI
             {
                 controller.SetProgressLabelValue("No Entries Deactivated!");
             }
+
+            PublishLink(downloadMngr.deactivationURL, "Deactivation");
+        }
+
+        private void PublishLink(string link, string type)
+        {
+            dbMmgr.AddLinkToDB(link, type);
         }
 
         public void UnzipFileAsync()
