@@ -6,47 +6,75 @@
         xmlns:local="clr-namespace:CrossTxUpdateClient"
         xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit" x:Class="CrossTxUpdateClient.MainWindow"
         mc:Ignorable="d"
-        Title="CrossTx Update Client" Height="526.956" Width="780.831" Loaded="Window_Loaded">
-    <Grid Margin="0,0,2,-1">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="402*"/>
-            <ColumnDefinition Width="58*"/>
-            <ColumnDefinition Width="305*"/>
-        </Grid.ColumnDefinitions>
-        <Image x:Name="logo" HorizontalAlignment="Left" Height="68" Margin="10,10,0,0" VerticalAlignment="Top" Width="316"
-               Source="/Resources/crosstx.png"/>
-        <Label x:Name="updateClientLabel" Content="UPDATE CLIENT" HorizontalAlignment="Left" Margin="233,38,0,0" VerticalAlignment="Top" Height="40" Width="211" FontFamily="Berlin Sans FB" FontSize="18" RenderTransformOrigin="0.264,0.261" Grid.ColumnSpan="2"/>
-        <CheckBox x:Name="checkBoxEnableAutoUpdates" Content="Enable Automatic Updates" HorizontalAlignment="Left" Margin="83,141,0,0" VerticalAlignment="Top" Height="30" Width="238" FontSize="14" RenderTransformOrigin="0.126,0.467" Checked="checkBoxEnableAutoUpdates_Checked" Unchecked="checkBoxEnableAutoUpdates_Unchecked"/>
-        <CheckBox x:Name="checkBoxStartOnBoot" Content="Start Service on Windows Boot" HorizontalAlignment="Left" Margin="83,301,0,0" VerticalAlignment="Top" Height="30" Width="238" FontSize="14" RenderTransformOrigin="0.126,0.467" Checked="checkBoxStartOnBoot_Checked" Unchecked="checkBoxStartOnBoot_Unchecked"/>
-        <CheckBox x:Name="checkBoxEnableAutoDeactivations" Content="Enable Automatic Deactivations" HorizontalAlignment="Left" Margin="321,141,0,0" VerticalAlignment="Top" FontSize="14" Grid.ColumnSpan="3" Height="18" Width="215" Checked="checkBoxEnableAutoDeactivations_Checked" Unchecked="checkBoxEnableAutoDeactivations_Unchecked"/>
-        <Label x:Name="labelAutomaticUpdates" Content="Automatic Updates" HorizontalAlignment="Left" Margin="39,104,0,0" VerticalAlignment="Top" FontSize="16" Height="31" Width="146"/>
-        <Separator HorizontalAlignment="Left" Height="46" Margin="39,113,-406,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="3"/>
-        <Label x:Name="labelUpdateTimes" Content="Automatic Update Intervals" HorizontalAlignment="Left" Margin="39,176,0,0" VerticalAlignment="Top" FontSize="16" Height="31" Width="202"/>
-        <Separator HorizontalAlignment="Left" Height="46" Margin="39,186,-406,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="3"/>
-        <toolkit:IntegerUpDown Name="updateIntegerUpDown" HorizontalAlignment="Left" Margin="240,217,0,0" VerticalAlignment="Top" Height="28" Width="90" Minimum="0" Maximum="31" ValueChanged="updateIntegerUpDown_ValueChanged"/>
-        <toolkit:IntegerUpDown Name="deactivationUpDown" HorizontalAlignment="Left" Margin="116.69,218,0,0" VerticalAlignment="Top" Height="28" Width="90" Minimum="0" Maximum="31" Grid.Column="2" ValueChanged="deactivationUpDown_ValueChanged"/>
-        <Label x:Name="labelUpdateDays" Content="Time Between Updates" HorizontalAlignment="Left" Margin="83,217,0,0" VerticalAlignment="Top" FontSize="14" Height="29" Width="152"/>
-        <Label x:Name="labelDeactivationDays" Content="Time Between Deactivations" HorizontalAlignment="Left" Margin="390,216,0,0" VerticalAlignment="Top" FontSize="14" Grid.ColumnSpan="3" Height="29" Width="183"/>
-        <Label x:Name="labelDay" Content="days" HorizontalAlignment="Left" Margin="330,217,0,0" VerticalAlignment="Top" FontSize="14" Height="29" Width="38"/>
-        <Label x:Name="labelDay2" Content="days" HorizontalAlignment="Left" Margin="206.69,218,0,0" VerticalAlignment="Top" FontSize="14" Grid.Column="2" Height="29" Width="38"/>
-        <Label x:Name="labelManualUpdates" Content="Manual Updates" HorizontalAlignment="Left" Margin="37,336,0,0" VerticalAlignment="Top" FontSize="16" Height="31" Width="126"/>
-        <Label x:Name="labelSystemSettings" Content="System Settings" HorizontalAlignment="Left" Margin="39,254,0,0" VerticalAlignment="Top" FontSize="16" Height="31" Width="126"/>
-        <Separator HorizontalAlignment="Left" Height="46" Margin="37,347,-398,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="3"/>
-        <Button x:Name="buttonManualUpdate" Content="Apply Update File" HorizontalAlignment="Left" Margin="107,393,0,0" VerticalAlignment="Top" Width="168" Height="35" Click="buttonManualUpdate_Click"/>
-        <Button x:Name="buttonManualDeactivation" Content="Apply Deactivation File" HorizontalAlignment="Left" Margin="308,393,0,0" VerticalAlignment="Top" Width="168" Height="35" Grid.ColumnSpan="3" Click="buttonManualDeactivation_Click" RenderTransformOrigin="0.5,0.5">
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-0.329"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </Button.RenderTransform>
-        </Button>
-        <Button x:Name="buttonManualCSV" Content="Apply CSV" HorizontalAlignment="Left" Margin="57,393,0,0" VerticalAlignment="Top" Width="168" Height="35" Grid.Column="2" Click="buttonManualCSV_Click"/>
-        <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="19" Margin="110,462,0,0" VerticalAlignment="Top" Width="578" Grid.ColumnSpan="3"/>
-        <Label x:Name="progressBarLabel" Content="" HorizontalAlignment="Left" Margin="107,436,0,0" VerticalAlignment="Top"/>
-        <Separator HorizontalAlignment="Left" Height="46" Margin="39,263,-400,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="3"/>
-        <Separator HorizontalAlignment="Left" Height="46" Margin="39,186,-400,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="3"/>
-    </Grid>
+        Title="CrossTx Update Client" Height="565.956" Width="803.831" Loaded="Window_Loaded">
+
+    <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="537" VerticalAlignment="Top" Width="804" Grid.ColumnSpan="3" Margin="0,0,-8,-2">
+        <TabItem Header="General Settings">
+            <Grid Margin="0,6,-2,-5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="33*"/>
+                    <ColumnDefinition Width="117*"/>
+                    <ColumnDefinition Width="264*"/>
+                    <ColumnDefinition Width="60*"/>
+                    <ColumnDefinition Width="314*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="logo" HorizontalAlignment="Left" Height="68" Margin="10,10,0,0" VerticalAlignment="Top" Width="316"
+               Source="/Resources/crosstx.png" Grid.ColumnSpan="3"/>
+                <Label x:Name="updateClientLabel" Content="UPDATE CLIENT" HorizontalAlignment="Left" Margin="83,38,0,0" VerticalAlignment="Top" Height="40" Width="211" FontFamily="Berlin Sans FB" FontSize="18" RenderTransformOrigin="0.264,0.261" Grid.ColumnSpan="2" Grid.Column="2"/>
+                <CheckBox x:Name="checkBoxEnableAutoUpdates" Content="Enable Automatic Updates" HorizontalAlignment="Left" Margin="50,141,0,0" VerticalAlignment="Top" Height="30" Width="238" FontSize="14" RenderTransformOrigin="0.126,0.467" Checked="checkBoxEnableAutoUpdates_Checked" Unchecked="checkBoxEnableAutoUpdates_Unchecked" Grid.Column="1" Grid.ColumnSpan="2"/>
+                <CheckBox x:Name="checkBoxStartOnBoot" Content="Start Service on Windows Boot" HorizontalAlignment="Left" Margin="50,301,0,0" VerticalAlignment="Top" Height="30" Width="238" FontSize="14" RenderTransformOrigin="0.126,0.467" Checked="checkBoxStartOnBoot_Checked" Unchecked="checkBoxStartOnBoot_Unchecked" Grid.Column="1" Grid.ColumnSpan="2"/>
+                <CheckBox x:Name="checkBoxEnableAutoDeactivations" Content="Enable Automatic Deactivations" HorizontalAlignment="Left" Margin="171,141,0,0" VerticalAlignment="Top" FontSize="14" Grid.ColumnSpan="3" Height="18" Width="215" Checked="checkBoxEnableAutoDeactivations_Checked" Unchecked="checkBoxEnableAutoDeactivations_Unchecked" Grid.Column="2"/>
+                <Label x:Name="labelAutomaticUpdates" Content="Automatic Updates" HorizontalAlignment="Left" Margin="6,104,0,0" VerticalAlignment="Top" FontSize="16" Height="31" Width="146" Grid.Column="1" Grid.ColumnSpan="2"/>
+                <Separator HorizontalAlignment="Left" Height="46" Margin="6,113,-383,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="4" Grid.Column="1"/>
+                <Label x:Name="labelUpdateTimes" Content="Automatic Update Intervals" HorizontalAlignment="Left" Margin="6,176,0,0" VerticalAlignment="Top" FontSize="16" Height="31" Width="202" Grid.Column="1" Grid.ColumnSpan="2"/>
+                <Separator HorizontalAlignment="Left" Height="46" Margin="6,186,-383,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="4" Grid.Column="1"/>
+                <toolkit:IntegerUpDown Name="updateIntegerUpDown" HorizontalAlignment="Left" Margin="90,217,0,0" VerticalAlignment="Top" Height="28" Width="90" Minimum="0" Maximum="31" ValueChanged="updateIntegerUpDown_ValueChanged" Grid.Column="2"/>
+                <toolkit:IntegerUpDown Name="deactivationUpDown" HorizontalAlignment="Left" Margin="117,218,0,0" VerticalAlignment="Top" Height="28" Width="90" Minimum="0" Maximum="31" Grid.Column="4" ValueChanged="deactivationUpDown_ValueChanged"/>
+                <Label x:Name="labelUpdateDays" Content="Time Between Updates" HorizontalAlignment="Left" Margin="50,217,0,0" VerticalAlignment="Top" FontSize="14" Height="29" Width="152" Grid.Column="1" Grid.ColumnSpan="2"/>
+                <Label x:Name="labelDeactivationDays" Content="Time Between Deactivations" HorizontalAlignment="Left" Margin="240,216,0,0" VerticalAlignment="Top" FontSize="14" Grid.ColumnSpan="3" Height="29" Width="183" Grid.Column="2"/>
+                <Label x:Name="labelDay" Content="days" HorizontalAlignment="Left" Margin="180,217,0,0" VerticalAlignment="Top" FontSize="14" Height="29" Width="38" Grid.Column="2"/>
+                <Label x:Name="labelDay2" Content="days" HorizontalAlignment="Left" Margin="207,218,0,0" VerticalAlignment="Top" FontSize="14" Grid.Column="4" Height="29" Width="38"/>
+                <Label x:Name="labelManualUpdates" Content="Manual Updates" HorizontalAlignment="Left" Margin="4,336,0,0" VerticalAlignment="Top" FontSize="16" Height="31" Width="126" Grid.Column="1" Grid.ColumnSpan="2"/>
+                <Label x:Name="labelSystemSettings" Content="System Settings" HorizontalAlignment="Left" Margin="6,254,0,0" VerticalAlignment="Top" FontSize="16" Height="31" Width="126" Grid.Column="1" Grid.ColumnSpan="2"/>
+                <Separator HorizontalAlignment="Left" Height="46" Margin="4,347,-381,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="4" Grid.Column="1"/>
+                <Button x:Name="buttonManualUpdate" Content="Apply Update File" HorizontalAlignment="Left" Margin="74,393,0,0" VerticalAlignment="Top" Width="168" Height="35" Click="buttonManualUpdate_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+                <Button x:Name="buttonManualDeactivation" Content="Apply Deactivation File" HorizontalAlignment="Left" Margin="158,393,0,0" VerticalAlignment="Top" Width="168" Height="35" Grid.ColumnSpan="3" Click="buttonManualDeactivation_Click" RenderTransformOrigin="0.5,0.5" Grid.Column="2">
+                    <Button.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-0.329"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Button.RenderTransform>
+                </Button>
+                <Button x:Name="buttonManualCSV" Content="Apply CSV" HorizontalAlignment="Left" Margin="39,393,0,0" VerticalAlignment="Top" Width="168" Height="35" Grid.Column="4" Click="buttonManualCSV_Click"/>
+                <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="19" Margin="77,462,0,0" VerticalAlignment="Top" Width="578" Grid.ColumnSpan="4" Grid.Column="1"/>
+                <Label x:Name="progressBarLabel" Content="" HorizontalAlignment="Left" Margin="74,436,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                <Separator HorizontalAlignment="Left" Height="46" Margin="6,263,-383,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="4" Grid.Column="1"/>
+                <Separator HorizontalAlignment="Left" Height="46" Margin="6,186,-383,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="4" Grid.Column="1"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Database Settings">
+            <Grid Margin="0,1,0,-2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="33*"/>
+                    <ColumnDefinition Width="381*"/>
+                    <ColumnDefinition Width="60*"/>
+                    <ColumnDefinition Width="314*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="logo1" HorizontalAlignment="Left" Height="68" Margin="10,10,0,0" VerticalAlignment="Top" Width="316"
+               Source="/Resources/crosstx.png" Grid.ColumnSpan="2"/>
+                <Label x:Name="updateClientLabel1" Content="UPDATE CLIENT" HorizontalAlignment="Left" Margin="200,38,0,0" VerticalAlignment="Top" Height="40" Width="211" FontFamily="Berlin Sans FB" FontSize="18" RenderTransformOrigin="0.264,0.261" Grid.ColumnSpan="2" Grid.Column="1"/>
+                <TextBox x:Name="textBoxServer" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="160,175,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="464" Grid.ColumnSpan="3"/>
+                <Label x:Name="labelServerName" Content="Server Name" Grid.Column="1" HorizontalAlignment="Left" Margin="50,172,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.321,0.192"/>
+                <TextBox x:Name="textBoxDatabase" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="160,215,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="464" Grid.ColumnSpan="3"/>
+                <TextBox x:Name="textBoxUsername" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="160,261,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="464" Grid.ColumnSpan="3"/>
+                <Label x:Name="labelServerName_Copy" Content="Database Name" Grid.Column="1" HorizontalAlignment="Left" Margin="50,212,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.321,0.192"/>
+                <Label x:Name="labelServerName_Copy1" Content="Username" Grid.Column="1" HorizontalAlignment="Left" Margin="50,258,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.321,0.192"/>
+                <PasswordBox x:Name="passwordBox" Grid.Column="1" HorizontalAlignment="Left" Margin="160,301,0,0" VerticalAlignment="Top" Width="464" Height="23" Grid.ColumnSpan="3"/>
+                <Label x:Name="labelServerName_Copy2" Content="Password" Grid.Column="1" HorizontalAlignment="Left" Margin="53,301,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.321,0.192"/>
+            </Grid>
+        </TabItem>
+    </TabControl>
 </Window>

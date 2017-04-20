@@ -152,5 +152,10 @@ namespace CrossTxUpdateClient
         {
             uiController.SetAsBoot((bool)this.checkBoxStartOnBoot.IsChecked);
         }
+
+        private void saveButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
