@@ -20,6 +20,48 @@ namespace CrossTxUpdateClient.DB
             }
         }
 
+        /// <summary>
+        /// This function should be used for storing previously downloaded links
+        /// </summary>
+        /// <param name="insertColumns"></param>
+        /// <param name="nextLine"></param>
+        /// <param name="table"></param>
+        /// <returns></returns>
+        public String makeDownloadLinkQuery(String[] insertColumns, String[] nextLine, string table)
+        {
+            String insertInto = "REPLACE INTO " + table + " (";
+            String values = " VALUES (";
+            for (int i = 0; i < insertColumns.Length; i++)
+            {
+                String key = insertColumns[i];
+                insertInto += key;
+
+                values += "'" + nextLine[i].Trim() + "'";
+                if (i == (insertColumns.Length - 1))
+                {
+                    insertInto += ")";
+                    values += ")";
+                }
+                else
+                {
+                    insertInto += ",";
+                    values += ",";
+                }
+            }
+
+            String query = insertInto + values + ";";
+            return query;
+        }
+
+
+        /// <summary>
+        /// This query function should be used for NPI tables
+        /// </summary>
+        /// <param name="insertColumns"></param>
+        /// <param name="nextLine"></param>
+        /// <param name="table"></param>
+        /// <param name="columnIndeces"></param>
+        /// <returns></returns>
         public String makeQuery(String[] insertColumns, String[] nextLine, string table, int[] columnIndeces)
         {
              String insertInto = "REPLACE INTO "+table+" (";

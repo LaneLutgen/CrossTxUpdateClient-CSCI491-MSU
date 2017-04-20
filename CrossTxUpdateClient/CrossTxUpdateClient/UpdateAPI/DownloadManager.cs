@@ -39,9 +39,9 @@ namespace CrossTxUpdateClient.UpdateAPI
         private const string url = "http://download.cms.gov/nppes";
         private const string baseURL = "http://download.cms.gov/nppes/NPI_Files.html";
 
-        private string csvURL;
-        private string updateURL;
-        private string deactivationURL;
+        public string csvURL;
+        public string updateURL;
+        public string deactivationURL;
 
         private string zipPath;
 

@@ -256,6 +256,20 @@ namespace CrossTxUpdateClient.DB
 
             return counter;
         }
+
+        {
+
+            QueryGen generator = new QueryGen(headers);
+
+            try
+            {
+                ExecuteQuery(query);
+            }
+            catch(MySqlException e)
+            {
+                Console.WriteLine("Bad things happened");
+            }
+        }
     }
 }
 
