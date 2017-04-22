@@ -136,6 +136,12 @@ namespace CrossTxUpdateClient.DB
 
         private void SortedInsert_DoWork(object sender, DoWorkEventArgs e)
         {
+            //System.Diagnostics.Stopwatch clock = new System.Diagnostics.Stopwatch();
+
+            //clock.Start();
+
+            //this.OpenConnection();
+
             CsvReader reader = new CsvReader(new StreamReader(filePath), true);
             QueryGen generator = new QueryGen(reader.GetFieldHeaders());
 
@@ -219,8 +225,7 @@ namespace CrossTxUpdateClient.DB
 
                 ++counter;
                 reader.CopyCurrentRecordTo(line);
-                Console.WriteLine(generator.makeQuery(NPIOrganizationData, line, orgTable, organizationIndeces));
-                Console.WriteLine(generator.makeQuery(NPIProviderData, line, provTable, providerIndexes));
+
                 Console.WriteLine(counter);
                 try
                 {
@@ -237,6 +242,11 @@ namespace CrossTxUpdateClient.DB
             }
 
             Console.WriteLine(counter);
+
+            //this.CloseConnection();
+
+            //clock.Stop();
+            //Console.WriteLine("Duration: " + clock.ElapsedMilliseconds);
         }
 
         private void SortedInsert_Complete(object sender, RunWorkerCompletedEventArgs e)
@@ -260,7 +270,8 @@ namespace CrossTxUpdateClient.DB
 
 
         /*Deletes a row that exists within either the npi_organization_data table 
-        *or the npi_provider_data, using the NPI as a key.
+        *or the npi_provider_data, using the NPI as a key. Then imports the NPI and 
+        *date of deactivation into a separate table to keep track of deactivations.
         */
         public int Remove(string filePath)
         {
@@ -268,6 +279,7 @@ namespace CrossTxUpdateClient.DB
 
             string orginizationsTable = "npi_organization_data";
             string providersTable = "npi_provider_data";
+            string deactivationTable = "deactivated_data";
 
             int counter = 0;
 
@@ -277,8 +289,12 @@ namespace CrossTxUpdateClient.DB
 
                 reader.CopyCurrentRecordTo(line);
                 string NPI = line[0];
+                string deactivationDate = line[1];
 
                 string query = "DELETE FROM " + orginizationsTable + " INNER JOIN " + providersTable + " WHERE " + orginizationsTable + ".NPI=" + NPI + " AND " + providersTable + ".NPI=" + NPI;
+                ExecuteQuery(query);
+
+                query = "REPLACE INTO " + deactivationTable + " ( NPI, DeactivationDate) VALUES (" + NPI + ", " + deactivationDate + ")";
                 ExecuteQuery(query);
 
                 counter++;

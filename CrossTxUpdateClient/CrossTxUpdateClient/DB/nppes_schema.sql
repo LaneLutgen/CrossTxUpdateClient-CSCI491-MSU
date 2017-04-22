@@ -100,7 +100,7 @@ CREATE TABLE `npi_provider_data` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-DROP TABLE IF EXISTS `past_links``;
+DROP TABLE IF EXISTS `past_links`;
 
 CREATE TABLE `past_links` (
   `Link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -108,6 +108,12 @@ CREATE TABLE `past_links` (
   `Type` varchar(45) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+DROP TABLE IF EXISTS `deactivated_data`;
+
+CREATE TABLE `deactivated_data` (
+  `NPI` int(10) unsigned NOT NULL,
+  `DeactivationDate` datetime DEFAULT NULL,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
