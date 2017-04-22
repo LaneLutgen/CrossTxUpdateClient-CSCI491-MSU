@@ -162,5 +162,26 @@ namespace CrossTxUpdateClient.UIControllers
         {
             mainWindow.progressBarLabel.Content = "";
         }
+
+        public void SetDBSettings(string server, string db, string user, string pass)
+        {
+            ConfigurationManager.ServerName = server;
+            ConfigurationManager.DBName = db;
+            ConfigurationManager.Username = user;
+            ConfigurationManager.Password = pass;
+        }
+
+        public void GetDBSettings(ref string server, ref string db, ref string user, ref string pass)
+        {
+            server = ConfigurationManager.ServerName;
+            db = ConfigurationManager.DBName;
+            user = ConfigurationManager.Username;
+            pass = ConfigurationManager.Password;
+        }
+
+        public void BindDataGrid(List<DB.LinkObject> objects)
+        {
+            mainWindow.BindDataGrid(objects);
+        }
     }
 }

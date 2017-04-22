@@ -92,6 +92,58 @@ namespace CrossTxUpdateClient.Configurations
             }
         }
 
+        public static string ServerName
+        {
+            get
+            {
+                return Properties.Settings.Default.ServerName;
+            }
+            set
+            {
+                Properties.Settings.Default.ServerName = value;
+                SaveSettings();
+            }
+        }
+
+        public static string DBName
+        {
+            get
+            {
+                return Properties.Settings.Default.DatabaseName;
+            }
+            set
+            {
+                Properties.Settings.Default.DatabaseName = value;
+                SaveSettings();
+            }
+        }
+
+        public static string Username
+        {
+            get
+            {
+                return Properties.Settings.Default.UserName;
+            }
+            set
+            {
+                Properties.Settings.Default.UserName = value;
+                SaveSettings();
+            }
+        }
+
+        public static string Password
+        {
+            get
+            {
+                return Properties.Settings.Default.Password;
+            }
+            set
+            {
+                Properties.Settings.Default.Password = value;
+                SaveSettings();
+            }
+        }
+
         private static void SaveSettings()
         {
             Properties.Settings.Default.Save();

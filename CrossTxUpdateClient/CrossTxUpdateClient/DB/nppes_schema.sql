@@ -104,8 +104,10 @@ DROP TABLE IF EXISTS `past_links``;
 
 CREATE TABLE `past_links` (
   `Link` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `Date` varchar(45) COLLATE utf8_unicode_ci NOT NULL
+  `Date` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `Type` varchar(45) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

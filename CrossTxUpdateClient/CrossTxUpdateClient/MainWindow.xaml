@@ -50,7 +50,7 @@
                 </Button>
                 <Button x:Name="buttonManualCSV" Content="Apply CSV" HorizontalAlignment="Left" Margin="39,393,0,0" VerticalAlignment="Top" Width="168" Height="35" Grid.Column="4" Click="buttonManualCSV_Click"/>
                 <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="19" Margin="77,462,0,0" VerticalAlignment="Top" Width="578" Grid.ColumnSpan="4" Grid.Column="1"/>
-                <Label x:Name="progressBarLabel" Content="" HorizontalAlignment="Left" Margin="74,436,0,0" VerticalAlignment="Top" Grid.Column="1"/>
+                <Label x:Name="progressBarLabel" Content="" HorizontalAlignment="Left" Margin="74,436,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="4" Width="581"/>
                 <Separator HorizontalAlignment="Left" Height="46" Margin="6,263,-383,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="4" Grid.Column="1"/>
                 <Separator HorizontalAlignment="Left" Height="46" Margin="6,186,-383,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="4" Grid.Column="1"/>
             </Grid>
@@ -59,22 +59,43 @@
             <Grid Margin="0,1,0,-2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="33*"/>
+                    <ColumnDefinition Width="253*"/>
+                    <ColumnDefinition Width="133*"/>
+                    <ColumnDefinition Width="61*"/>
+                    <ColumnDefinition Width="318*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="logo1" HorizontalAlignment="Left" Height="68" Margin="10,10,0,0" VerticalAlignment="Top" Width="316"
+               Source="/Resources/crosstx.png" Grid.ColumnSpan="3"/>
+                <Label x:Name="updateClientLabel1" Content="UPDATE CLIENT" HorizontalAlignment="Left" Margin="200,38,0,0" VerticalAlignment="Top" Height="40" Width="211" FontFamily="Berlin Sans FB" FontSize="18" RenderTransformOrigin="0.264,0.261" Grid.ColumnSpan="3" Grid.Column="1"/>
+                <TextBox x:Name="textBoxServer" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="160,175,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="464" Grid.ColumnSpan="4"/>
+                <Label x:Name="labelServerName" Content="Server Name" Grid.Column="1" HorizontalAlignment="Left" Margin="50,172,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.321,0.192"/>
+                <TextBox x:Name="textBoxDatabase" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="160,215,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="464" Grid.ColumnSpan="4"/>
+                <TextBox x:Name="textBoxUsername" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="160,261,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="464" Grid.ColumnSpan="4"/>
+                <Label x:Name="labelServerName_Copy" Content="Database Name" Grid.Column="1" HorizontalAlignment="Left" Margin="50,212,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.321,0.192"/>
+                <Label x:Name="labelServerName_Copy1" Content="Username" Grid.Column="1" HorizontalAlignment="Left" Margin="50,258,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.321,0.192"/>
+                <PasswordBox x:Name="passwordBox" Grid.Column="1" HorizontalAlignment="Left" Margin="160,301,0,0" VerticalAlignment="Top" Width="464" Height="23" Grid.ColumnSpan="4"/>
+                <Label x:Name="labelServerName_Copy2" Content="Password" Grid.Column="1" HorizontalAlignment="Left" Margin="53,301,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.321,0.192"/>
+                <Button x:Name="saveButton" Grid.ColumnSpan="2" Content="Save Settings" Grid.Column="2" HorizontalAlignment="Left" Margin="61,384,0,0" VerticalAlignment="Top" Width="110" Height="27" Click="saveButton_Click"/>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Update Log">
+            <Grid Margin="0,1,0,-2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="33*"/>
                     <ColumnDefinition Width="381*"/>
                     <ColumnDefinition Width="60*"/>
                     <ColumnDefinition Width="314*"/>
                 </Grid.ColumnDefinitions>
-                <Image x:Name="logo1" HorizontalAlignment="Left" Height="68" Margin="10,10,0,0" VerticalAlignment="Top" Width="316"
+                <Image x:Name="logo2" HorizontalAlignment="Left" Height="68" Margin="10,10,0,0" VerticalAlignment="Top" Width="316"
                Source="/Resources/crosstx.png" Grid.ColumnSpan="2"/>
-                <Label x:Name="updateClientLabel1" Content="UPDATE CLIENT" HorizontalAlignment="Left" Margin="200,38,0,0" VerticalAlignment="Top" Height="40" Width="211" FontFamily="Berlin Sans FB" FontSize="18" RenderTransformOrigin="0.264,0.261" Grid.ColumnSpan="2" Grid.Column="1"/>
-                <TextBox x:Name="textBoxServer" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="160,175,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="464" Grid.ColumnSpan="3"/>
-                <Label x:Name="labelServerName" Content="Server Name" Grid.Column="1" HorizontalAlignment="Left" Margin="50,172,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.321,0.192"/>
-                <TextBox x:Name="textBoxDatabase" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="160,215,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="464" Grid.ColumnSpan="3"/>
-                <TextBox x:Name="textBoxUsername" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="160,261,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="464" Grid.ColumnSpan="3"/>
-                <Label x:Name="labelServerName_Copy" Content="Database Name" Grid.Column="1" HorizontalAlignment="Left" Margin="50,212,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.321,0.192"/>
-                <Label x:Name="labelServerName_Copy1" Content="Username" Grid.Column="1" HorizontalAlignment="Left" Margin="50,258,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.321,0.192"/>
-                <PasswordBox x:Name="passwordBox" Grid.Column="1" HorizontalAlignment="Left" Margin="160,301,0,0" VerticalAlignment="Top" Width="464" Height="23" Grid.ColumnSpan="3"/>
-                <Label x:Name="labelServerName_Copy2" Content="Password" Grid.Column="1" HorizontalAlignment="Left" Margin="53,301,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.321,0.192"/>
-                <Button x:Name="saveButton" Grid.ColumnSpan="2" Content="Save Settings" Grid.Column="1" HorizontalAlignment="Left" Margin="314,384,0,0" VerticalAlignment="Top" Width="110" Height="27" Click="saveButton_Click"/>
+                <Label x:Name="updateClientLabel2" Content="UPDATE CLIENT" HorizontalAlignment="Left" Margin="200,38,0,0" VerticalAlignment="Top" Height="40" Width="211" FontFamily="Berlin Sans FB" FontSize="18" RenderTransformOrigin="0.264,0.261" Grid.ColumnSpan="2" Grid.Column="1"/>
+                <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="22,78,0,0" VerticalAlignment="Top" Grid.ColumnSpan="4" Height="406" Width="753" ItemsSource="{Binding}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Link}" Width="250" Header="Link"/>
+                        <DataGridTextColumn Binding="{Binding Date}" Width="250" Header="Date"/>
+                        <DataGridTextColumn Binding="{Binding Type}" Width="250" Header="Type"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
         </TabItem>
     </TabControl>

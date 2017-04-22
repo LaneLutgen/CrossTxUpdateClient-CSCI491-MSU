@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Bytescout.Spreadsheet;
 using CrossTxUpdateClient.UIControllers;
 using CrossTxUpdateClient.DB;
+using CrossTxUpdateClient.Configurations;
 
 
 namespace CrossTxUpdateClient.UpdateAPI
@@ -33,9 +34,8 @@ namespace CrossTxUpdateClient.UpdateAPI
             path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\CrossTxDownloadTest";
             zipPath = path + "\\csv.zip";
             downloadMngr = new DownloadManager(path, zipPath);
-
-            //This is hardcoded for now but ideally they will want to plug in their DB info
-            dbMmgr = new DBManager("127.0.0.1", "nppes_1", "root", "4ppropri4teP4ssword");
+            dbMmgr = new DBManager(ConfigurationManager.ServerName, ConfigurationManager.DBName, ConfigurationManager.Username, ConfigurationManager.Password);
+            controller.BindDataGrid(dbMmgr.GetLinksFromDB());
         }
 
         public bool DownloadFullCSV()

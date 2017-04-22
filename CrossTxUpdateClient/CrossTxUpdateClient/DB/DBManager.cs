@@ -5,6 +5,8 @@ using MySql.Data.MySqlClient;
 using LumenWorks.Framework.IO.Csv;
 using System.ComponentModel;
 using CrossTxUpdateClient.UpdateAPI;
+using System.Windows;
+using System.Collections.Generic;
 
 namespace CrossTxUpdateClient.DB
 {
@@ -48,7 +50,7 @@ namespace CrossTxUpdateClient.DB
             }
             catch (MySqlException e)
             {
-                Console.WriteLine("Error connecting to the database");
+                Console.WriteLine("Error connecting to the database. Make sure all credentials are correct.");
             }
 
         }
@@ -67,11 +69,11 @@ namespace CrossTxUpdateClient.DB
                 switch (ex.Number)
                 {
                     case 0:
-                        Console.Write("Unable to connect to server.");
+                        MessageBox.Show("Unable to connect to server.");
                         break;
 
                     case 1045:
-                        Console.Write("Invalid username/password.");
+                        MessageBox.Show("Invalid username/password.");
                         break;
                 }
                 return false;
@@ -300,6 +302,35 @@ namespace CrossTxUpdateClient.DB
             {
                 Console.WriteLine("Bad things happened");
             }
+        }
+
+        public List<LinkObject> GetLinksFromDB()
+        {
+            List<LinkObject> links = new List<LinkObject>();
+
+            MySqlCommand cmd = connection.CreateCommand();
+            cmd.CommandText = "SELECT * from past_links";
+
+            try
+            {
+                OpenConnection();
+
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        links.Add(new LinkObject(reader.GetString(0), reader.GetString(1), reader.GetString(2)));
+                    }
+                }
+
+                CloseConnection();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error connecting to DB");
+            }
+
+            return links;
         }
     }
 }

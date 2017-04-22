@@ -123,6 +123,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Configurations\ConfigurationManager.cs" />
+    <Compile Include="DB\LinkObject.cs" />
     <Compile Include="DB\QueryGen.cs" />
     <Compile Include="DB\DBManager.cs" />
     <Compile Include="Services\ServiceManager.cs" />
@@ -178,13 +179,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DB\TestDatabase.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DB\TestDatabase_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>TestDatabase.mdf</DependentUpon>
-    </Content>
     <EmbeddedResource Include="Resources\icon.png" />
     <Resource Include="Resources\icon.ico" />
     <Resource Include="icon.ico" />

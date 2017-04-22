@@ -18,7 +18,8 @@ using System.ComponentModel;
 
 using CrossTxUpdateClient.UIControllers;
 using CrossTxUpdateClient.Services;
-
+using CrossTxUpdateClient.DB;
+using System.Data;
 
 namespace CrossTxUpdateClient
 {
@@ -28,6 +29,7 @@ namespace CrossTxUpdateClient
     public partial class MainWindow : Window
     {
         private IUserInterfaceController uiController;
+        private DataTable linkTable;
 
         public MainWindow()
         {
@@ -90,6 +92,43 @@ namespace CrossTxUpdateClient
             this.updateIntegerUpDown.Value = uiController.GetTimeBetweenUpdates();
             this.deactivationUpDown.Value = uiController.GetTimeBetweenDeactivations();
             this.checkBoxStartOnBoot.IsChecked = uiController.GetBoot();
+
+            string server = null;
+            string db = null;
+            string user = null;
+            string pass = null;
+
+            uiController.GetDBSettings(ref server, ref db, ref user, ref pass);
+
+            if(server != null && server != null && server != null && server != null)
+            {
+                this.textBoxServer.Text = server;
+                this.textBoxDatabase.Text = db;
+                this.textBoxUsername.Text = user;
+                this.passwordBox.Password = pass;
+            }
+
+            if(linkTable != null)
+            {
+                this.dataGrid.DataContext = linkTable.DefaultView;
+            }
+        }
+
+        public void BindDataGrid(List<LinkObject> objects)
+        {
+            if(objects != null)
+            {
+                DataTable table = new DataTable();
+                table.Columns.Add("Link");
+                table.Columns.Add("Date");
+                table.Columns.Add("Type");
+                foreach (LinkObject obj in objects)
+                {
+                    table.Rows.Add(obj.Link, obj.Date, obj.Type);
+                }
+
+                linkTable = table;
+            }  
         }
 
         private void checkBoxEnableAutoUpdates_Checked(object sender, RoutedEventArgs e)
@@ -101,7 +140,6 @@ namespace CrossTxUpdateClient
         {
             uiController.SetEnableAutoUpdatesConfig((bool)this.checkBoxEnableAutoUpdates.IsChecked);
         }
-
 
         private void checkBoxEnableAutoDeactivations_Checked(object sender, RoutedEventArgs e)
         {
@@ -155,7 +193,8 @@ namespace CrossTxUpdateClient
 
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
-
+            uiController.SetDBSettings(this.textBoxServer.Text, this.textBoxDatabase.Text, this.textBoxUsername.Text, this.passwordBox.Password);
+            System.Windows.MessageBox.Show("DB Settings Saved. Restart software to reconnect to the database.");
         }
     }
 }

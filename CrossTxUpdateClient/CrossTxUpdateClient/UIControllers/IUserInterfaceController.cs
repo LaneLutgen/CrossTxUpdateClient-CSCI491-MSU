@@ -37,5 +37,9 @@ namespace CrossTxUpdateClient.UIControllers
         bool GetBoot();
 
         void SetAsBoot(bool value);
+
+        void SetDBSettings(string server, string db, string user, string pass);
+
+        void GetDBSettings(ref string server, ref string db, ref string user, ref string pass);
     }
 }
