@@ -38,6 +38,31 @@ namespace CrossTxUpdateClient
             InitConfigurations();
 
             InitSysTrayIcon();
+
+            ServiceManager.Start(linkTable);
+        }
+
+        private void updateClientLabel_Loaded(object sender, RoutedEventArgs e)
+        {
+            //Check if Auto Updates has been enabled by the user
+            if (Configurations.ConfigurationManager.EnableAutoUpdates)
+            {
+                bool found = ServiceManager.CheckForNewUpdates();
+                if (!found)
+                {
+                    ServiceManager.DownloadUpdateFile();
+                }
+            }
+
+            //Check if Auto deactivations has been enabled by the user
+            if (Configurations.ConfigurationManager.EnableAutoDeactivations)
+            {
+                bool found = ServiceManager.CheckForNewDeactivations();
+                if (!found)
+                {
+                    ServiceManager.DownloadDeactivationFile();
+                }
+            }
         }
 
         private void InitSysTrayIcon()
@@ -90,7 +115,6 @@ namespace CrossTxUpdateClient
             this.checkBoxEnableAutoUpdates.IsChecked = uiController.GetEnableAutoUpdatesConfig();
             this.checkBoxEnableAutoDeactivations.IsChecked = uiController.GetEnableAutoDeactivationsConfig();
             this.updateIntegerUpDown.Value = uiController.GetTimeBetweenUpdates();
-            this.deactivationUpDown.Value = uiController.GetTimeBetweenDeactivations();
             this.checkBoxStartOnBoot.IsChecked = uiController.GetBoot();
 
             string server = null;
@@ -141,6 +165,14 @@ namespace CrossTxUpdateClient
             uiController.SetEnableAutoUpdatesConfig((bool)this.checkBoxEnableAutoUpdates.IsChecked);
         }
 
+        private void checkBoxEnableAutoUpdates_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.checkBoxEnableAutoUpdates.IsChecked == true)
+            {
+                System.Windows.MessageBox.Show("Please restart software for the automatic updates to go into effect.");
+            }
+        }
+
         private void checkBoxEnableAutoDeactivations_Checked(object sender, RoutedEventArgs e)
         {
             uiController.SetEnableAutoDeactivationsConfig((bool)this.checkBoxEnableAutoDeactivations.IsChecked);
@@ -151,14 +183,17 @@ namespace CrossTxUpdateClient
             uiController.SetEnableAutoDeactivationsConfig((bool)this.checkBoxEnableAutoDeactivations.IsChecked);
         }
 
+        private void checkBoxEnableAutoDeactivations_Click(object sender, RoutedEventArgs e)
+        {
+            if(this.checkBoxEnableAutoDeactivations.IsChecked == true)
+            {
+                System.Windows.MessageBox.Show("Please restart software for the automatic deactivations to go into effect.");
+            }
+        }
+
         private void updateIntegerUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             uiController.SetTimeBetweenUpdates((int)this.updateIntegerUpDown.Value);
-        }
-
-        private void deactivationUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            uiController.SetTimeBetweenDeactivations((int)this.deactivationUpDown.Value);
         }
 
         private void buttonManualCSV_Click(object sender, RoutedEventArgs e)
@@ -178,7 +213,7 @@ namespace CrossTxUpdateClient
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            ServiceManager.Start();
+            ServiceManager.Start(linkTable);
         }
 
         private void checkBoxStartOnBoot_Checked(object sender, RoutedEventArgs e)

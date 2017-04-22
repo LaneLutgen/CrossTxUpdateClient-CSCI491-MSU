@@ -17,13 +17,13 @@ namespace CrossTxUpdateClient.UIControllers
     /// </summary>
     public class UserInterfaceController : IUserInterfaceController
     {
-        private MainWindow mainWindow;
+        public MainWindow MainUI;
         private Updater updater;
 
         public UserInterfaceController(MainWindow window)
         {
-            mainWindow = window;
-            updater = new Updater(this);
+            MainUI = window;
+            updater = Updater.CreateAndGetInstance(this);
         }
         //covered
         public void SetEnableAutoDeactivationsConfig(bool value)
@@ -79,11 +79,10 @@ namespace CrossTxUpdateClient.UIControllers
 
         public void DownloadFullCSV()
         {
-            mainWindow.progressBarLabel.Content = "Downloading Full Data Set...";
+            MainUI.progressBarLabel.Content = "Downloading Full Data Set...";
             if(updater.DownloadFullCSV())
             {
                 StartDownloadAsync();
-                //updater.AddToDB();
             }
             else
             {
@@ -94,11 +93,10 @@ namespace CrossTxUpdateClient.UIControllers
 
         public void DownloadUpdateFile()
         {
-            mainWindow.progressBarLabel.Content = "Downloading Latest Update File...";
+            MainUI.progressBarLabel.Content = "Downloading Latest Update File...";
             if (updater.DownloadLatestUpdateFile())
             {
                 StartDownloadAsync();
-                //updater.UpdateDB();
             }
             else
             {
@@ -109,11 +107,10 @@ namespace CrossTxUpdateClient.UIControllers
 
         public void DownloadDeactivationFile()
         {
-            mainWindow.progressBarLabel.Content = "Downloading Latest Deactivation File...";
+            MainUI.progressBarLabel.Content = "Downloading Latest Deactivation File...";
             if(updater.DownloadLatestDeactivationFile())
             {
                 StartDownloadAsync();
-                //updater.RemoveFromDB();
             }
             else
             {
@@ -133,19 +130,19 @@ namespace CrossTxUpdateClient.UIControllers
 
         private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            mainWindow.progressBar.Value = e.ProgressPercentage;
+            MainUI.progressBar.Value = e.ProgressPercentage;
         }
 
         private void worker_Complete(object sender, RunWorkerCompletedEventArgs e)
         {
-            mainWindow.progressBarLabel.Content = "Extracting File Contents. Please Wait...";
-            mainWindow.progressBar.Value = 0;
+            MainUI.progressBarLabel.Content = "Extracting File Contents. Please Wait...";
+            MainUI.progressBar.Value = 0;
             updater.UnzipFileAsync();
         }
 
         public void SetProgressLabelValue(string value)
         {
-            mainWindow.progressBarLabel.Content = value;
+            MainUI.progressBarLabel.Content = value;
         }
 
         public bool GetBoot()
@@ -158,9 +155,9 @@ namespace CrossTxUpdateClient.UIControllers
             ConfigurationManager.IsBootupSequence = value;
         }
 
-        private void ClearProgressLabel()
+        public void ClearProgressLabel()
         {
-            mainWindow.progressBarLabel.Content = "";
+            MainUI.progressBarLabel.Content = "";
         }
 
         public void SetDBSettings(string server, string db, string user, string pass)
@@ -181,7 +178,7 @@ namespace CrossTxUpdateClient.UIControllers
 
         public void BindDataGrid(List<DB.LinkObject> objects)
         {
-            mainWindow.BindDataGrid(objects);
+            MainUI.BindDataGrid(objects);
         }
     }
 }

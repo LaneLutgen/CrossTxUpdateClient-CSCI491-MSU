@@ -30,7 +30,7 @@ namespace CrossTxUpdateClient.Testing.UpdateAPITests
         {
             string path = testPath + "\\csv.zip";
 
-            DownloadManager dlManager = new DownloadManager(testPath, path);
+            DownloadManager dlManager = DownloadManager.CreateAndGetInstance(testPath, path);
             dlManager.DownloadFullCSV();
 
             Assert.IsTrue(File.Exists(path));
@@ -44,7 +44,7 @@ namespace CrossTxUpdateClient.Testing.UpdateAPITests
         {
             string path = testPath + "\\update.zip";
 
-            DownloadManager dlManager = new DownloadManager(testPath, path);
+            DownloadManager dlManager = DownloadManager.CreateAndGetInstance(testPath, path);
             dlManager.DownloadUpdateFile();
 
             Assert.IsTrue(File.Exists(path));
@@ -58,7 +58,7 @@ namespace CrossTxUpdateClient.Testing.UpdateAPITests
         {
             string path = testPath + "\\update.zip";
 
-            DownloadManager dlManager = new DownloadManager(testPath, path);
+            DownloadManager dlManager = DownloadManager.CreateAndGetInstance(testPath, path);
             dlManager.ExtractZIPToDirectory(path, testPath);
 
             //Not sure how to assert this, I just look in the folder
@@ -72,7 +72,7 @@ namespace CrossTxUpdateClient.Testing.UpdateAPITests
         {
             string path = testPath + "\\deactivation.zip";
 
-            DownloadManager dlManager = new DownloadManager(testPath, path);
+            DownloadManager dlManager = DownloadManager.CreateAndGetInstance(testPath, path);
             dlManager.DownloadDeactivationFile();
 
             Assert.IsTrue(File.Exists(path));
@@ -86,7 +86,7 @@ namespace CrossTxUpdateClient.Testing.UpdateAPITests
         {
             string path = testPath + "\\deactivation.zip";
 
-            DownloadManager dlManager = new DownloadManager(testPath, path);
+            DownloadManager dlManager = DownloadManager.CreateAndGetInstance(testPath, path);
             dlManager.ExtractZIPToDirectory(path, testPath);
 
             //Not sure how to assert this, I just look in the folder

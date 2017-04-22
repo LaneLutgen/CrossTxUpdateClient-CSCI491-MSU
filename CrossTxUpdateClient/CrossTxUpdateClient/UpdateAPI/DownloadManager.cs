@@ -45,7 +45,7 @@ namespace CrossTxUpdateClient.UpdateAPI
 
         private string zipPath;
 
-        public DownloadManager(string filePath, string zipPath)
+        private DownloadManager(string filePath, string zipPath)
         {
             this.filePath = filePath;
             this.zipPath = zipPath;
@@ -53,7 +53,43 @@ namespace CrossTxUpdateClient.UpdateAPI
             ParseHTMLForLatestLinks();
         }
 
-        private void ParseHTMLForLatestLinks()
+        private static DownloadManager instance;
+
+        private static object mutex = new object();
+
+        public static DownloadManager CreateAndGetInstance(string filePath, string zipPath)
+        {
+            if(instance == null)
+            {
+                //Added lock incase we'd ever be creating a DownloadManager from multiple threads (doubt it)
+                lock(mutex)
+                {
+                    if(instance == null)
+                    {
+                        instance = new DownloadManager(filePath, zipPath);
+                    }
+                }
+            }
+
+            return instance;
+        }
+
+        public static DownloadManager Instance
+        {
+            get
+            {
+                if(instance != null)
+                {
+                    return instance;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public void ParseHTMLForLatestLinks()
         {
             HtmlWeb hw = new HtmlWeb();
             HtmlDocument doc = hw.Load(baseURL);

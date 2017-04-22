@@ -24,19 +24,57 @@ namespace CrossTxUpdateClient.UpdateAPI
 
         private DownloadManager downloadMngr;
         private DBManager dbMmgr;
-        private UserInterfaceController controller;
+        public UserInterfaceController Controller;
 
         private NPI_TYPE npiType = NPI_TYPE.None;
 
-        public Updater(UserInterfaceController controller)
+        private Updater(UserInterfaceController controller)
         {
-            this.controller = controller;
+            this.Controller = controller;
             path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\CrossTxDownloadTest";
             zipPath = path + "\\csv.zip";
-            downloadMngr = new DownloadManager(path, zipPath);
+            downloadMngr = DownloadManager.CreateAndGetInstance(path, zipPath);
             dbMmgr = new DBManager(ConfigurationManager.ServerName, ConfigurationManager.DBName, ConfigurationManager.Username, ConfigurationManager.Password);
             controller.BindDataGrid(dbMmgr.GetLinksFromDB());
         }
+
+        private static Updater instance;
+
+        private static object mutex = new object();
+
+        public static Updater CreateAndGetInstance(UserInterfaceController controller)
+        {
+            if (instance == null)
+            {
+                //Added lock incase we'd ever be creating a Updater from multiple threads (doubt it)
+                lock (mutex)
+                {
+                    if (instance == null)
+                    {
+                        instance = new Updater(controller);
+                    }
+                }
+            }
+
+            return instance;
+        }
+
+        public static Updater Instance
+        {
+            get
+            {
+                if (instance != null)
+                {
+                    return instance;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        public object MainUI { get; internal set; }
 
         public bool DownloadFullCSV()
         {
@@ -107,10 +145,10 @@ namespace CrossTxUpdateClient.UpdateAPI
         {
             int numDeavtivated = dbMmgr.Remove(filePath);
             if (numDeavtivated > 0) {
-                controller.SetProgressLabelValue("Sucessfully Deactivated "+ numDeavtivated + " Entries!");
+                Controller.SetProgressLabelValue("Sucessfully Deactivated "+ numDeavtivated + " Entries!");
             }else
             {
-                controller.SetProgressLabelValue("No Entries Deactivated!");
+                Controller.SetProgressLabelValue("No Entries Deactivated!");
             }
         }
 
@@ -135,7 +173,7 @@ namespace CrossTxUpdateClient.UpdateAPI
 
         private void unzipWorker_Complete(object sender, RunWorkerCompletedEventArgs e)
         {
-            controller.SetProgressLabelValue("Download and Extraction Complete!");
+            Controller.SetProgressLabelValue("Download and Extraction Complete!");
 
             //Delete all files that aren't used
             string csvFile = CleanupDownloadFolder();
