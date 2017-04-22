@@ -173,7 +173,7 @@ namespace CrossTxUpdateClient.UpdateAPI
 
         private void unzipWorker_Complete(object sender, RunWorkerCompletedEventArgs e)
         {
-            Controller.SetProgressLabelValue("Download and Extraction Complete!");
+            Controller.SetProgressLabelValue("Applying to database, please wait...");
 
             //Delete all files that aren't used
             string csvFile = CleanupDownloadFolder();

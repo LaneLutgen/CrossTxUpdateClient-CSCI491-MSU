@@ -263,7 +263,9 @@ namespace CrossTxUpdateClient.DB
                     AddLinkToDB(DownloadManager.DeactivationURL, type.ToString());
                     break;
             }
-            
+
+            Updater instance = Updater.Instance;
+            instance.Controller.SetProgressLabelValue("Database operation successful!");
         }
 
         
