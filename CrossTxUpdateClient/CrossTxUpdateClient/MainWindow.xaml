@@ -76,6 +76,8 @@
                 <PasswordBox x:Name="passwordBox" Grid.Column="1" HorizontalAlignment="Left" Margin="160,301,0,0" VerticalAlignment="Top" Width="464" Height="23" Grid.ColumnSpan="4"/>
                 <Label x:Name="labelServerName_Copy2" Content="Password" Grid.Column="1" HorizontalAlignment="Left" Margin="53,301,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.321,0.192"/>
                 <Button x:Name="saveButton" Grid.ColumnSpan="2" Content="Save Settings" Grid.Column="2" HorizontalAlignment="Left" Margin="61,384,0,0" VerticalAlignment="Top" Width="110" Height="27" Click="saveButton_Click"/>
+                <Label x:Name="labelDBSetting" Content="Database Settings" HorizontalAlignment="Left" Margin="10,110,0,0" VerticalAlignment="Top" FontSize="16" Height="31" Width="146" Grid.Column="1"/>
+                <Separator HorizontalAlignment="Left" Height="46" Margin="10,121,-377,0" VerticalAlignment="Top" Width="1132" RenderTransformOrigin="0.425,0.168" Grid.ColumnSpan="4" Grid.Column="1"/>
             </Grid>
         </TabItem>
         <TabItem Header="Update Log">
@@ -90,11 +92,6 @@
                Source="/Resources/crosstx.png" Grid.ColumnSpan="2"/>
                 <Label x:Name="updateClientLabel2" Content="UPDATE CLIENT" HorizontalAlignment="Left" Margin="200,38,0,0" VerticalAlignment="Top" Height="40" Width="211" FontFamily="Berlin Sans FB" FontSize="18" RenderTransformOrigin="0.264,0.261" Grid.ColumnSpan="2" Grid.Column="1"/>
                 <DataGrid x:Name="dataGrid" HorizontalAlignment="Left" Margin="22,78,0,0" VerticalAlignment="Top" Grid.ColumnSpan="4" Height="406" Width="753" ItemsSource="{Binding}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Link}" Width="250" Header="Link"/>
-                        <DataGridTextColumn Binding="{Binding Date}" Width="250" Header="Date"/>
-                        <DataGridTextColumn Binding="{Binding Type}" Width="250" Header="Type"/>
-                    </DataGrid.Columns>
                 </DataGrid>
             </Grid>
         </TabItem>
