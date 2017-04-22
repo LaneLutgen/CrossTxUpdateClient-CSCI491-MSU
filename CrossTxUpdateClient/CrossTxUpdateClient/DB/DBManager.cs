@@ -229,7 +229,7 @@ namespace CrossTxUpdateClient.DB
                 Console.WriteLine(counter);
                 try
                 {
-                    if (line[1].Trim().Equals("1"))
+                    if (line[1].Trim().Equals("2"))
                         ExecuteQuery(generator.makeQuery(NPIOrganizationData, line, orgTable, organizationIndeces));
                     else
                         ExecuteQuery(generator.makeQuery(NPIProviderData, line, provTable, providerIndexes));

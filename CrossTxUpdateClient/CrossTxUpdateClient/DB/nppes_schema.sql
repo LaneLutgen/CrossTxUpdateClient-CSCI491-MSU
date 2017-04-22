@@ -113,6 +113,7 @@ DROP TABLE IF EXISTS `deactivated_data`;
 CREATE TABLE `deactivated_data` (
   `NPI` int(10) unsigned NOT NULL,
   `DeactivationDate` datetime DEFAULT NULL,
+  PRIMARY KEY (`NPI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
