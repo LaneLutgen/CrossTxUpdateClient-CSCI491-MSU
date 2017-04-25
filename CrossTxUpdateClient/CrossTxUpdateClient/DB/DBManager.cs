@@ -213,8 +213,6 @@ namespace CrossTxUpdateClient.DB
                                         "DeactivationDate"};
 
             int counter = 0;
-            String Table1Query;
-            String Table2Query;
 
             //Skip header line
             //reader.ReadNextRecord();
