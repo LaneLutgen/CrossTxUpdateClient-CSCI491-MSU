@@ -119,8 +119,6 @@ namespace CrossTxUpdateClient.DB
             {
                 MySqlCommand cmd = new MySqlCommand(query, connection);
                 cmd.ExecuteNonQuery();
-
-                this.CloseConnection();
             }
         }
 
@@ -142,7 +140,7 @@ namespace CrossTxUpdateClient.DB
 
             //clock.Start();
 
-            //this.OpenConnection();
+            this.OpenConnection();
 
             CsvReader reader = new CsvReader(new StreamReader(filePath), true);
             QueryGen generator = new QueryGen(reader.GetFieldHeaders());
@@ -266,6 +264,7 @@ namespace CrossTxUpdateClient.DB
 
             Updater instance = Updater.Instance;
             instance.Controller.SetProgressLabelValue("Database operation successful!");
+            this.CloseConnection();
         }
 
         

@@ -62,6 +62,8 @@ namespace CrossTxUpdateClient.DB
         /// <param name="table"></param>
         /// <param name="columnIndeces"></param>
         /// <returns></returns>
+        /// 
+
         public String makeQuery(String[] insertColumns, String[] nextLine, string table, int[] columnIndeces)
         {
              String insertInto = "REPLACE INTO "+table+" (";
