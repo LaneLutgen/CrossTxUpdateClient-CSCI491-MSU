@@ -34,7 +34,7 @@ namespace CrossTxUpdateClient.DB
         }
 
 
-        private void Initialize(string server, string database, string uid, string password)
+        private bool Initialize(string server, string database, string uid, string password)
         {
             this.server = server;
             this.database = database;
@@ -47,11 +47,13 @@ namespace CrossTxUpdateClient.DB
             try
             {
                 connection = new MySqlConnection(connectionString);
+                return true;
             }
             catch (MySqlException e)
             {
                 Console.WriteLine("Error connecting to the database. Make sure all credentials are correct.");
             }
+            return false;
 
         }
 
@@ -291,10 +293,14 @@ namespace CrossTxUpdateClient.DB
                 string NPI = line[0];
                 string deactivationDate = line[1];
 
-                string query = "DELETE FROM " + orginizationsTable + " INNER JOIN " + providersTable + " WHERE " + orginizationsTable + ".NPI=" + NPI + " AND " + providersTable + ".NPI=" + NPI;
+                //string query = "DELETE FROM " + orginizationsTable + " INNER JOIN " + providersTable + " WHERE " + orginizationsTable + ".NPI=" + NPI + " AND " + providersTable + ".NPI=" + NPI;
+                string query = "DELETE FROM " + orginizationsTable + " WHERE NPI=" + NPI;
                 ExecuteQuery(query);
 
-                query = "REPLACE INTO " + deactivationTable + " ( NPI, DeactivationDate) VALUES (" + NPI + ", " + deactivationDate + ")";
+                query = "DELETE FROM " + providersTable + " WHERE NPI=" + NPI;
+                ExecuteQuery(query);
+
+                query = "REPLACE INTO " + deactivationTable + " ( NPI, DeactivationDate ) VALUES ( " + NPI + ", '" + deactivationDate  + "' )";
                 ExecuteQuery(query);
 
                 counter++;

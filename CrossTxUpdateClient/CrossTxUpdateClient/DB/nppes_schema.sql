@@ -109,10 +109,11 @@ CREATE TABLE `past_links` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 DROP TABLE IF EXISTS `deactivated_data`;
-
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `deactivated_data` (
   `NPI` int(10) unsigned NOT NULL,
-  `DeactivationDate` datetime DEFAULT NULL,
+  `DeactivationDate` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`NPI`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
