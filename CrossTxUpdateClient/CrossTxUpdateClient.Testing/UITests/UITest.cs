@@ -57,7 +57,7 @@ namespace CrossTxUpdateClient.Testing.UITests
             Assert.IsTrue(ConfigurationManager.EnableAutoUpdates == true);
 
             LocalTestInstance.SetEnableAutoUpdatesConfig(false);
-            Assert.IsFalse(ConfigurationManager.EnableAutoUpdates == false);
+            Assert.IsTrue(ConfigurationManager.EnableAutoUpdates == false);
         }
 
         [TestMethod]

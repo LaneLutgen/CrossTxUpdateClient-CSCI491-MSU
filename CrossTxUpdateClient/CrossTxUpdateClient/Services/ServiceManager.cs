@@ -22,12 +22,7 @@ namespace CrossTxUpdateClient.Services
         public static void Start(DataTable pastLinks)
         {
             linkTable = pastLinks;
-
-            //24 hour timer (final implementation)
-            //timer = new Timer(24 * 60 * 60 * 1000);
-
-            //5 minutes for testing purposes
-            timer = new Timer(Configurations.ConfigurationManager.TimeBetweenUpdates * 60 * 1000);
+            timer = new Timer(Configurations.ConfigurationManager.TimeBetweenUpdates * 60 * 60 * 1000);
             timer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             timer.Start();
         }
