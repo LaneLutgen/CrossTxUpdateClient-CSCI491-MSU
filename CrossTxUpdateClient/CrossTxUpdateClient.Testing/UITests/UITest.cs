@@ -17,6 +17,13 @@ namespace CrossTxUpdateClient.Testing.UITests
     {
         private static MainWindow window;
 
+        [TestInitialize]
+        public void Init()
+        {
+            window = new MainWindow();
+        }
+
+        [TestMethod]
         public void SetEnableAutoDeactivateConfig_Test()
         {
             UserInterfaceController LocalTestInstance = new UserInterfaceController(window);
@@ -27,6 +34,7 @@ namespace CrossTxUpdateClient.Testing.UITests
             Assert.IsTrue(ConfigurationManager.EnableAutoDeactivations == false);
         }
         
+        [TestMethod]
         public void GetEnableAutoDeactivationsConfig_Test()
         {
             UserInterfaceController LocalTestInstance = new UserInterfaceController(window);
@@ -41,6 +49,7 @@ namespace CrossTxUpdateClient.Testing.UITests
             Assert.IsFalse(LogicalAssignment);
         }
 
+        [TestMethod]
         public void SetEnableAutoUpdatesConfig_Test()
         {
             UserInterfaceController LocalTestInstance = new UserInterfaceController(window);
@@ -51,6 +60,7 @@ namespace CrossTxUpdateClient.Testing.UITests
             Assert.IsFalse(ConfigurationManager.EnableAutoUpdates == false);
         }
 
+        [TestMethod]
         public void GetEnableAutoUpdatesConfig_Test()
         {
             UserInterfaceController LocalTestInstance = new UserInterfaceController(window);
@@ -65,6 +75,7 @@ namespace CrossTxUpdateClient.Testing.UITests
             Assert.IsFalse(LogicalAssignment);
         }
 
+        [TestMethod]
         public void SetTimeBetweenDeactivations_Test()
         {
             UserInterfaceController LocalTestInstance = new UserInterfaceController(window);
@@ -75,6 +86,7 @@ namespace CrossTxUpdateClient.Testing.UITests
             Assert.IsTrue(TimeBetweenDeactivations == 5);
         }
 
+        [TestMethod]
         public void GetTimeBetweenDeactivations_Test()
         {
             UserInterfaceController LocalTestInstance = new UserInterfaceController(window);
@@ -85,6 +97,7 @@ namespace CrossTxUpdateClient.Testing.UITests
             Assert.IsTrue(TimeBetweenDeactivations == 5);
         }
 
+        [TestMethod]
         public void SetTimeBetweenUpdates_Test()
         {
             UserInterfaceController LocalTestInstance = new UserInterfaceController(window);
@@ -95,6 +108,7 @@ namespace CrossTxUpdateClient.Testing.UITests
             Assert.IsTrue(TimeBetweenUpdates == 5);
         }
 
+        [TestMethod]
         public void GetTimeBetweenUpdates_Test()
         {
             UserInterfaceController LocalTestInstance = new UserInterfaceController(window);
@@ -103,6 +117,27 @@ namespace CrossTxUpdateClient.Testing.UITests
             var TimeBetweenUpdates = LocalTestInstance.GetTimeBetweenUpdates();
 
             Assert.IsTrue(TimeBetweenUpdates == 5);
+        }
+
+        [TestMethod]
+        public void DownloadCSV_NoExceptions()
+        {
+            UserInterfaceController LocalTestInstance = new UserInterfaceController(window);
+            LocalTestInstance.DownloadFullCSV();
+        }
+
+        [TestMethod]
+        public void DownloadUpdate_NoExceptions()
+        {
+            UserInterfaceController LocalTestInstance = new UserInterfaceController(window);
+            LocalTestInstance.DownloadUpdateFile();
+        }
+
+        [TestMethod]
+        public void DownloadDeactivation_NoExceptions()
+        {
+            UserInterfaceController LocalTestInstance = new UserInterfaceController(window);
+            LocalTestInstance.DownloadDeactivationFile();
         }
     }
 }

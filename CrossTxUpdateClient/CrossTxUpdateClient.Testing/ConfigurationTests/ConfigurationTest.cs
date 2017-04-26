@@ -18,6 +18,7 @@ namespace CrossTxUpdateClient.Testing.ConfigurationTests
         {
         }
 
+        [TestMethod]
         public bool EnableAutoUpdates_Test()
         {
             var value = ConfigurationManager.EnableAutoUpdates;
@@ -34,6 +35,7 @@ namespace CrossTxUpdateClient.Testing.ConfigurationTests
 
         }
 
+        [TestMethod]
         public bool EnableAutoDeactivations_Test()
         {
             var value = ConfigurationManager.EnableAutoDeactivations;
@@ -49,19 +51,22 @@ namespace CrossTxUpdateClient.Testing.ConfigurationTests
             }
         }
 
+        [TestMethod]
         public void TimeBetweenUpdates_Test()
         {
             var TimeSetting = ConfigurationManager.TimeBetweenUpdates;
 
             Assert.IsTrue(TimeSetting == ConfigurationManager.TimeBetweenUpdates);
         }
-
+        
+        [TestMethod]
         public void TimeBetweenDeactivations_Test()
         {
             var DeactivationTime = ConfigurationManager.TimeBetweenDeactivations;
             Assert.IsTrue(DeactivationTime == ConfigurationManager.TimeBetweenDeactivations);
         }
 
+        [TestMethod]
         public void SaveSettings_Test()
         {
             //Have all other methods return a bool, check to see if they are all true???
