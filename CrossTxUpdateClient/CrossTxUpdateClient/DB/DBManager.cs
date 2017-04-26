@@ -247,9 +247,9 @@ namespace CrossTxUpdateClient.DB
             //Console.WriteLine("Duration: " + clock.ElapsedMilliseconds);
         }
 
-        private void SortedInsert_Complete(object sender, RunWorkerCompletedEventArgs e)
+        private void OnComplete()
         {
-            switch(type)
+            switch (type)
             {
                 case NPI_TYPE.Full:
                     AddLinkToDB(DownloadManager.CsvURL, type.ToString());
@@ -264,11 +264,14 @@ namespace CrossTxUpdateClient.DB
 
             Updater instance = Updater.Instance;
             instance.Controller.SetProgressLabelValue("Database operation successful!");
-            this.CloseConnection();
         }
 
-        
+        private void SortedInsert_Complete(object sender, RunWorkerCompletedEventArgs e)
+        {
 
+            OnComplete();
+            this.CloseConnection();
+        }
 
         /*Deletes a row that exists within either the npi_organization_data table 
         *or the npi_provider_data, using the NPI as a key. Then imports the NPI and 
@@ -276,13 +279,24 @@ namespace CrossTxUpdateClient.DB
         */
         public int Remove(string filePath)
         {
+            int counter = 0;
+            this.filePath = filePath;
+            BackgroundWorker dbWorker = new BackgroundWorker();
+            dbWorker.DoWork += Remove_DoWork;
+            dbWorker.RunWorkerCompleted += Remove_Complete;
+
+            dbWorker.RunWorkerAsync();
+
+            return counter;
+        }
+
+        private void Remove_DoWork(object sender, DoWorkEventArgs e)
+        {
             CsvReader reader = new CsvReader(new StreamReader(filePath), true);
 
             string orginizationsTable = "npi_organization_data";
             string providersTable = "npi_provider_data";
             string deactivationTable = "deactivated_data";
-
-            int counter = 0;
 
             while (reader.ReadNextRecord())
             {
@@ -299,13 +313,15 @@ namespace CrossTxUpdateClient.DB
                 query = "DELETE FROM " + providersTable + " WHERE NPI=" + NPI;
                 ExecuteQuery(query);
 
-                query = "REPLACE INTO " + deactivationTable + " ( NPI, DeactivationDate ) VALUES ( " + NPI + ", '" + deactivationDate  + "' )";
+                query = "REPLACE INTO " + deactivationTable + " ( NPI, DeactivationDate ) VALUES ( " + NPI + ", '" + deactivationDate + "' )";
                 ExecuteQuery(query);
-
-                counter++;
             }
+        }
 
-            return counter;
+        private void Remove_Complete(object sender, RunWorkerCompletedEventArgs e)
+        {
+            OnComplete();
+            this.CloseConnection();
         }
 
         public void AddLinkToDB(string link, string type)
