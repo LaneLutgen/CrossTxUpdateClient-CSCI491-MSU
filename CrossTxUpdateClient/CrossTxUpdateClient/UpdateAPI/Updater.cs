@@ -142,13 +142,7 @@ namespace CrossTxUpdateClient.UpdateAPI
         /// </summary>
         public void RemoveFromDB(string filePath)
         {
-            int numDeavtivated = dbMmgr.Remove(filePath);
-            if (numDeavtivated > 0) {
-                Controller.SetProgressLabelValue("Sucessfully Deactivated "+ numDeavtivated + " Entries!");
-            }else
-            {
-                Controller.SetProgressLabelValue("No Entries Deactivated!");
-            }
+                Controller.SetProgressLabelValue("Entries Deactivated!");
         }
 
         private void PublishLink(string link, NPI_TYPE type)

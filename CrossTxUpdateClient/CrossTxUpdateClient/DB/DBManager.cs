@@ -212,7 +212,7 @@ namespace CrossTxUpdateClient.DB
                                         "IsSoleProprietor",
                                         "DeactivationDate"};
 
-            int counter = 0;
+            //int counter = 0;
 
             //Skip header line
             //reader.ReadNextRecord();
@@ -221,10 +221,10 @@ namespace CrossTxUpdateClient.DB
             {
                 string[] line = new string[330];
 
-                ++counter;
+                //++counter;
                 reader.CopyCurrentRecordTo(line);
 
-                Console.WriteLine(counter);
+                //Console.WriteLine(counter);
                 try
                 {
                     if (line[1].Trim().Equals("2"))
@@ -239,7 +239,7 @@ namespace CrossTxUpdateClient.DB
 
             }
 
-            Console.WriteLine(counter);
+            //Console.WriteLine(counter);
 
             //this.CloseConnection();
 
@@ -277,17 +277,14 @@ namespace CrossTxUpdateClient.DB
         *or the npi_provider_data, using the NPI as a key. Then imports the NPI and 
         *date of deactivation into a separate table to keep track of deactivations.
         */
-        public int Remove(string filePath)
+        public void Remove(string filePath)
         {
-            int counter = 0;
             this.filePath = filePath;
             BackgroundWorker dbWorker = new BackgroundWorker();
             dbWorker.DoWork += Remove_DoWork;
             dbWorker.RunWorkerCompleted += Remove_Complete;
 
             dbWorker.RunWorkerAsync();
-
-            return counter;
         }
 
         private void Remove_DoWork(object sender, DoWorkEventArgs e)
