@@ -296,7 +296,7 @@ namespace CrossTxUpdateClient.DB
                     if (fields[0].Length == 10)
                     {
                         string NPI = fields[0];
-
+                        string deactivationDate = fields[1];
                         try
                         {
                             string query = "DELETE FROM " + orginizationsTable + " WHERE NPI=" + NPI;
@@ -305,7 +305,7 @@ namespace CrossTxUpdateClient.DB
                             query = "DELETE FROM " + providersTable + " WHERE NPI=" + NPI;
                             ExecuteQuery(query);
 
-                            query = "REPLACE INTO " + deactivationTable + " ( NPI, DeactivationDate ) VALUES ( " + NPI + ", '" + DateTime.Now.ToString() + "' )";
+                            query = "REPLACE INTO " + deactivationTable + " ( NPI, DeactivationDate ) VALUES ( " + NPI + ", '" + deactivationDate + "' )";
                             ExecuteQuery(query);
                         }
                         catch (MySqlException ex) {}
