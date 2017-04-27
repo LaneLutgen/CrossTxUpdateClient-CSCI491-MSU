@@ -52,7 +52,7 @@ namespace CrossTxUpdateClient.Testing.ServiceTests
             table.Columns.Add("Link");
             table.Columns.Add("Date");
             table.Columns.Add("Type");
-            table.Rows.Add(DownloadManager.DeactivationURL, DateTime.Now.ToString(), "Update");
+            table.Rows.Add(DownloadManager.DeactivationURL, DateTime.Now.ToString(), "Deactivation");
 
             ServiceManager.Start(table);
             bool found = ServiceManager.CheckForNewDeactivations();
