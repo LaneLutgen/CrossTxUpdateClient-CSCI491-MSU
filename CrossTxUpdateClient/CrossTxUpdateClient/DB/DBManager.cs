@@ -251,8 +251,7 @@ namespace CrossTxUpdateClient.DB
 
             Updater instance = Updater.Instance;
             instance.Controller.SetProgressLabelValue("Database operation successful!");
-
-
+            File.Delete(filePath);
         }
 
         private void SortedInsert_Complete(object sender, RunWorkerCompletedEventArgs e)
@@ -290,7 +289,6 @@ namespace CrossTxUpdateClient.DB
             {
                 parser.TextFieldType = FieldType.Delimited;
                 parser.SetDelimiters(",");
-                int count = 0;
                 while (parser.LineNumber != -1)
                 {
                     //Processing row
@@ -311,9 +309,9 @@ namespace CrossTxUpdateClient.DB
                             ExecuteQuery(query);
                         }
                         catch (MySqlException ex) {}
-                    }
-                    parser.Close();
+                    }                    
                 }
+                parser.Close();
             }
         }
 
