@@ -74,6 +74,8 @@ namespace CrossTxUpdateClient.UpdateAPI
 
         public bool DownloadFullCSV()
         {
+            ClearDownloadFolder();
+
             bool successfull = false;
 
             if (downloadMngr.CSVLinkFound)
@@ -89,6 +91,8 @@ namespace CrossTxUpdateClient.UpdateAPI
 
         public bool DownloadLatestUpdateFile()
         {
+            ClearDownloadFolder();
+
             bool successfull = false;
 
             if (downloadMngr.UpdateLinkFound)
@@ -104,6 +108,8 @@ namespace CrossTxUpdateClient.UpdateAPI
 
         public bool DownloadLatestDeactivationFile()
         {
+            ClearDownloadFolder();
+
             bool successfull = false;
 
             if (downloadMngr.DeactivationLinkFound)
@@ -115,6 +121,20 @@ namespace CrossTxUpdateClient.UpdateAPI
             }
 
             return successfull;
+        }
+
+        private void ClearDownloadFolder()
+        {
+            System.IO.DirectoryInfo di = new DirectoryInfo(path);
+
+            foreach (FileInfo file in di.GetFiles())
+            {
+                file.Delete();
+            }
+            foreach (DirectoryInfo dir in di.GetDirectories())
+            {
+                dir.Delete(true);
+            }
         }
 
         /// <summary>

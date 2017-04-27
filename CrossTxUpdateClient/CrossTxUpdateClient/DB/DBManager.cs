@@ -251,7 +251,6 @@ namespace CrossTxUpdateClient.DB
 
             Updater instance = Updater.Instance;
             instance.Controller.SetProgressLabelValue("Database operation successful!");
-            File.Delete(filePath);
         }
 
         private void SortedInsert_Complete(object sender, RunWorkerCompletedEventArgs e)
