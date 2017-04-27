@@ -73,7 +73,7 @@ namespace CrossTxUpdateClient.DB
                 String key = insertColumns[i];
                 insertInto += key;
 
-                values += "'" + nextLine[columnIndeces[i]].Trim() + "'";
+                values += "\"" + nextLine[columnIndeces[i]].Trim() + "\"";
                 if (i == (insertColumns.Length - 2))
                 {
                     insertInto += ")";

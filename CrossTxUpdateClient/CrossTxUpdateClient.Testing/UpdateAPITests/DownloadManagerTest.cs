@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CrossTxUpdateClient.UpdateAPI;
+using System.Threading;
 
 namespace CrossTxUpdateClient.Testing.UpdateAPITests
 {
@@ -14,7 +15,7 @@ namespace CrossTxUpdateClient.Testing.UpdateAPITests
         public void InitTestComponents()
         {
             //Using Desktop for now to test but we can change this to something else like AppData
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\CrossTxDownloadTest";
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\CrossTxDownloadTest\\";
             if(!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
@@ -51,20 +52,6 @@ namespace CrossTxUpdateClient.Testing.UpdateAPITests
         }
 
         /// <summary>
-        /// This method is for testing that a deactivation zip can be extracted
-        /// </summary>
-        [TestMethod]
-        public void ExtractUpdateFile_FileExtractsSuccessfully()
-        {
-            string path = testPath + "\\update.zip";
-
-            DownloadManager dlManager = DownloadManager.CreateAndGetInstance(testPath, path);
-            dlManager.ExtractZIPToDirectory(path, testPath);
-
-            //Not sure how to assert this, I just look in the folder
-        }
-
-        /// <summary>
         /// This method is for testing that that deactivation files are downloaded successfully 
         /// </summary>
         [TestMethod]
@@ -79,17 +66,19 @@ namespace CrossTxUpdateClient.Testing.UpdateAPITests
         }
 
         /// <summary>
-        /// This method is for testing that a deactivation zip can be extracted
+        /// This method is for testing that that deactivation files are downloaded successfully 
         /// </summary>
         [TestMethod]
-        public void ExtractDeactivationFile_FileExtractsSuccessfully()
+        public void ParseHTMLForLinks_LinksExist()
         {
-            string path = testPath + "\\deactivation.zip";
+            string path = testPath + "\\csv.zip";
 
             DownloadManager dlManager = DownloadManager.CreateAndGetInstance(testPath, path);
-            dlManager.ExtractZIPToDirectory(path, testPath);
+            dlManager.ParseHTMLForLatestLinks();
 
-            //Not sure how to assert this, I just look in the folder
+            Assert.IsTrue(DownloadManager.CsvURL != null);
+            Assert.IsTrue(DownloadManager.UpdateURL != null);
+            Assert.IsTrue(DownloadManager.DeactivationURL != null);
         }
     }
 }
