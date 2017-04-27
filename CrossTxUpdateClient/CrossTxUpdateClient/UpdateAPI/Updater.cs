@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using CrossTxUpdateClient.UIControllers;
 using CrossTxUpdateClient.DB;
 using CrossTxUpdateClient.Configurations;
-
+using Bytescout.Spreadsheet;
 
 namespace CrossTxUpdateClient.UpdateAPI
 {
@@ -142,13 +139,7 @@ namespace CrossTxUpdateClient.UpdateAPI
         /// </summary>
         public void RemoveFromDB(string filePath)
         {
-            int numDeavtivated = dbMmgr.Remove(filePath);
-            if (numDeavtivated > 0) {
-                Controller.SetProgressLabelValue("Sucessfully Deactivated "+ numDeavtivated + " Entries!");
-            }else
-            {
-                Controller.SetProgressLabelValue("No Entries Deactivated!");
-            }
+            dbMmgr.Remove(filePath, NPI_TYPE.Deactivation);
         }
 
         private void PublishLink(string link, NPI_TYPE type)
@@ -205,40 +196,6 @@ namespace CrossTxUpdateClient.UpdateAPI
                 }
                 catch { }
 
-            FileInfo[] deactivationFile = di.GetFiles("*.xlsx")
-                                 .Where(p => p.Extension == ".xlsx").ToArray();
-
-            foreach (FileInfo file in deactivationFile)
-                try
-                {
-                    //Spreadsheet document = new Spreadsheet();
- 
-                    //document.LoadFromFile(file.FullName);
-                    
-
-                    // Save the document as CSV file
-                    //document.Workbook.Worksheets[0].SaveAsCSV(csvFile);
-                    //document.Close();
-
-                    string excelFile = file.FullName;
-                    string csvFile = this.path + "\\NPPESDeactivatedNPIReport.csv";
-                    //string textFile = excelFile + ".csv";
-                    Microsoft.Office.Interop.Excel.Application app = new Microsoft.Office.Interop.Excel.Application();
-                    Microsoft.Office.Interop.Excel.Workbook wbWorkbook = app.Workbooks.Add(excelFile); 
-                    Microsoft.Office.Interop.Excel.Sheets wsSheet = wbWorkbook.Worksheets;
-                    Microsoft.Office.Interop.Excel.Worksheet CurSheet = (Microsoft.Office.Interop.Excel.Worksheet)wsSheet[1];
-                    Microsoft.Office.Interop.Excel.Range thisCell = (Microsoft.Office.Interop.Excel.Range)CurSheet.Cells[1, 1];
-
-                    //wbWorkbook.SaveAs(excelFile, Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookNormal, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlShared, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-                    wbWorkbook.SaveAs(csvFile, Microsoft.Office.Interop.Excel.XlFileFormat.xlCSVWindows, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlShared, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-
-                    wbWorkbook.Close(false, "", true);
-
-                    file.Attributes = FileAttributes.Normal;
-                    File.Delete(file.FullName);
-                }
-                catch { }
-
             FileInfo[] headerFiles = di.GetFiles("*FileHeader.csv")
                                      .Where(p => p.Extension == ".csv").ToArray();
 
@@ -250,10 +207,30 @@ namespace CrossTxUpdateClient.UpdateAPI
                 }
                 catch { }
 
-            FileInfo[] actualFile = di.GetFiles("*.csv")
+            FileInfo[] deactivationFile = di.GetFiles("*.xlsx")
+                                 .Where(p => p.Extension == ".xlsx").ToArray();
+
+            foreach (FileInfo file in deactivationFile)
+                try
+                {
+                    Spreadsheet document = new Spreadsheet();
+
+                    document.LoadFromFile(file.FullName);
+                    string csvFile = this.path + "\\NPPESDeactivatedNPIReport.csv";
+
+                    // Save the document as CSV file
+                    document.Workbook.Worksheets[0].SaveAsCSV(csvFile);
+                    document.Close();
+
+                    file.Attributes = FileAttributes.Normal;
+                    File.Delete(file.FullName);
+                }
+                catch { }
+
+                    FileInfo[] actualFile = di.GetFiles("*.csv")
                                  .Where(p => p.Extension == ".csv").ToArray();
 
-            return actualFile[0].FullName;
+                return actualFile[0].FullName;
         }
 
         private void CreateDirectory()

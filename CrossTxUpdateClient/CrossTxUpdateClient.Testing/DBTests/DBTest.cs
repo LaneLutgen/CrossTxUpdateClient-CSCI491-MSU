@@ -57,7 +57,7 @@ namespace CrossTxUpdateClient.Testing.DBTests
             db.SortedInsert(updateFile, UpdateAPI.NPI_TYPE.Update);
             System.Threading.Thread.Sleep(2000);
 
-            db.Remove(deactivateFile);
+            db.Remove(deactivateFile, UpdateAPI.NPI_TYPE.Deactivation);
             System.Threading.Thread.Sleep(2000);
         }
     }

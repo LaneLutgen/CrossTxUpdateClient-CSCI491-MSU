@@ -7,6 +7,7 @@ using System.ComponentModel;
 using CrossTxUpdateClient.UpdateAPI;
 using System.Windows;
 using System.Collections.Generic;
+using Microsoft.VisualBasic.FileIO;
 
 namespace CrossTxUpdateClient.DB
 {
@@ -136,10 +137,6 @@ namespace CrossTxUpdateClient.DB
 
         private void SortedInsert_DoWork(object sender, DoWorkEventArgs e)
         {
-            //System.Diagnostics.Stopwatch clock = new System.Diagnostics.Stopwatch();
-
-            //clock.Start();
-
             this.OpenConnection();
 
             CsvReader reader = new CsvReader(new StreamReader(filePath), true);
@@ -213,9 +210,7 @@ namespace CrossTxUpdateClient.DB
                                         "DeactivationDate"};
 
             int counter = 0;
-
-            //Skip header line
-            //reader.ReadNextRecord();
+            int dps = 0;
 
             while (reader.ReadNextRecord())
             {
@@ -224,7 +219,6 @@ namespace CrossTxUpdateClient.DB
                 ++counter;
                 reader.CopyCurrentRecordTo(line);
 
-                Console.WriteLine(counter);
                 try
                 {
                     if (line[1].Trim().Equals("2"))
@@ -235,16 +229,9 @@ namespace CrossTxUpdateClient.DB
                 catch (MySqlException ex)
                 {
                     Console.WriteLine("USER ERROR, NOT DEVELOPER (Donnel you cheeky bastard)");
+                    dps++;
                 }
-
             }
-
-            Console.WriteLine(counter);
-
-            //this.CloseConnection();
-
-            //clock.Stop();
-            //Console.WriteLine("Duration: " + clock.ElapsedMilliseconds);
         }
 
         private void OnComplete()
@@ -264,6 +251,8 @@ namespace CrossTxUpdateClient.DB
 
             Updater instance = Updater.Instance;
             instance.Controller.SetProgressLabelValue("Database operation successful!");
+
+
         }
 
         private void SortedInsert_Complete(object sender, RunWorkerCompletedEventArgs e)
@@ -277,44 +266,54 @@ namespace CrossTxUpdateClient.DB
         *or the npi_provider_data, using the NPI as a key. Then imports the NPI and 
         *date of deactivation into a separate table to keep track of deactivations.
         */
-        public int Remove(string filePath)
+        public void Remove(string filePath, NPI_TYPE type)
         {
-            int counter = 0;
             this.filePath = filePath;
+            this.type = type;
+
             BackgroundWorker dbWorker = new BackgroundWorker();
             dbWorker.DoWork += Remove_DoWork;
             dbWorker.RunWorkerCompleted += Remove_Complete;
 
             dbWorker.RunWorkerAsync();
 
-            return counter;
         }
 
         private void Remove_DoWork(object sender, DoWorkEventArgs e)
         {
-            CsvReader reader = new CsvReader(new StreamReader(filePath), true);
 
             string orginizationsTable = "npi_organization_data";
             string providersTable = "npi_provider_data";
             string deactivationTable = "deactivated_data";
 
-            while (reader.ReadNextRecord())
+            using (TextFieldParser parser = new TextFieldParser(filePath))
             {
-                string[] line = new string[2];
+                parser.TextFieldType = FieldType.Delimited;
+                parser.SetDelimiters(",");
+                int count = 0;
+                while (parser.LineNumber != -1)
+                {
+                    //Processing row
+                    string[] fields = parser.ReadFields();
+                    if (fields[0].Length == 10)
+                    {
+                        string NPI = fields[0];
 
-                reader.CopyCurrentRecordTo(line);
-                string NPI = line[0];
-                string deactivationDate = line[1];
+                        try
+                        {
+                            string query = "DELETE FROM " + orginizationsTable + " WHERE NPI=" + NPI;
+                            ExecuteQuery(query);
 
-                //string query = "DELETE FROM " + orginizationsTable + " INNER JOIN " + providersTable + " WHERE " + orginizationsTable + ".NPI=" + NPI + " AND " + providersTable + ".NPI=" + NPI;
-                string query = "DELETE FROM " + orginizationsTable + " WHERE NPI=" + NPI;
-                ExecuteQuery(query);
+                            query = "DELETE FROM " + providersTable + " WHERE NPI=" + NPI;
+                            ExecuteQuery(query);
 
-                query = "DELETE FROM " + providersTable + " WHERE NPI=" + NPI;
-                ExecuteQuery(query);
-
-                query = "REPLACE INTO " + deactivationTable + " ( NPI, DeactivationDate ) VALUES ( " + NPI + ", '" + deactivationDate + "' )";
-                ExecuteQuery(query);
+                            query = "REPLACE INTO " + deactivationTable + " ( NPI, DeactivationDate ) VALUES ( " + NPI + ", '" + DateTime.Now.ToString() + "' )";
+                            ExecuteQuery(query);
+                        }
+                        catch (MySqlException ex) {}
+                    }
+                    parser.Close();
+                }
             }
         }
 
